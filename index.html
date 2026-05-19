@@ -1,0 +1,842 @@
+<!doctype html>
+<html class="dark" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport" />
+    <meta
+      name="description"
+      content="Watch today's football matches live on Yalla Live. Enjoy Yalla Shoot streaming, real-time scores, and fixtures on mobile in full HD. Watch live now!" />
+    <meta
+      name="keywords"
+      content="Yalla Live, yalla shoot, Yalla Shoot live stream of today's matches, yalla live football, koora live, yalla shoot tv, yalla koora, live football, match schedule, live scores, yalla tv" />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content="Yalla Live – Live Football Streaming Today | Yalla Shoot" />
+    <meta
+      property="og:description"
+      content="Watch today's football matches live on Yalla Live. Enjoy Yalla Shoot streaming, real-time scores, and fixtures on mobile in HD." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Yalla Live – Live Football Streaming Today | Yalla Shoot" />
+    <meta
+      name="twitter:description"
+      content="Watch today's football matches live on Yalla Live. Enjoy Yalla Shoot streaming, real-time scores, and fixtures on mobile in HD." />
+    <link id="canonical-link" rel="canonical" href="https://voltstream.com/" />
+    <script>
+      // Dynamically auto-heals canonical URL to match the active deployed domain
+      document.getElementById('canonical-link').setAttribute('href', window.location.origin + window.location.pathname);
+    </script>
+    <title>Yalla Live – Live Football Streaming Today | Yalla Shoot</title>
+    <link rel="icon" type="image/png" href="favicon.png" />
+    
+    <!-- Tailwind CSS & Google Fonts -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    
+    <!-- Tailwind Configuration -->
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              background: '#0f172a',
+              surface: '#1e293b',
+              primary: '#ee335f',
+              accent: '#fac912'
+            },
+            fontFamily: { sora: ['Sora', 'sans-serif'] }
+          }
+        }
+      };
+    </script>
+    
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="style.css" />
+    
+    <!-- External Match Data File -->
+    <script src="matches.js"></script>
+  </head>
+  <body class="overflow-x-hidden">
+    
+    <!-- ══════════════════════════════════════════════════
+     HEADER
+    ══════════════════════════════════════════════════ -->
+    <header class="fixed top-0 w-full z-50 border-b border-[#ee335f]/20 bg-white/95 dark:bg-slate-900/95 backdrop-blur shadow-sm">
+      <div class="flex justify-between items-center px-4 md:px-8 py-0 w-full max-w-[1200px] mx-auto h-[80px]">
+        
+        <!-- Left Side: Unified Brand Logo Image -->
+        <a href="index.html" class="h-full flex items-center select-none hover:opacity-90 transition-opacity">
+          <img src="logos/logo-unified.png" alt="Yalla Live" class="h-[70px] md:h-[72px] w-auto object-contain" />
+        </a>
+        
+        <!-- Right Side: Theme Toggle & Social Icons -->
+        <div class="flex items-center gap-2">
+          <!-- Theme Toggle -->
+          <button id="theme-toggle" class="header-icon-btn btn-theme" aria-label="Toggle Dark Mode">
+            <span class="material-symbols-outlined">dark_mode</span>
+          </button>
+          <!-- Telegram -->
+          <a href="https://t.me" target="_blank" class="header-icon-btn hover:scale-105 transition-transform" aria-label="Telegram" style="background: transparent; padding: 0;">
+            <img src="logos/telegram.svg" alt="Telegram" class="w-full h-full object-contain" />
+          </a>
+          
+          <!-- Facebook -->
+          <a href="https://facebook.com" target="_blank" class="header-icon-btn hover:scale-105 transition-transform" aria-label="Facebook" style="background: transparent; padding: 0;">
+            <img src="logos/facebook.svg" alt="Facebook" class="w-full h-full object-contain" />
+          </a>
+        </div>
+        
+      </div>
+    </header>
+
+    <!-- ══════════════════════════════════════════════════
+     MAIN
+    ══════════════════════════════════════════════════ -->
+    <main class="pt-[100px] pb-6 md:pb-16 max-w-[1000px] mx-auto min-h-screen px-4">
+      
+      <!-- Green Sub Bar announcement (SEO-optimized H1 Header) -->
+      <div class="mb-6">
+        <h1 class="green-sub-bar shadow-sm block m-0">
+          Yalla Live - Live Soccer TV HD Streaming
+        </h1>
+      </div>
+
+      <!-- MAIN LAYOUT WRAPPER -->
+      <div class="main-wrapper">
+        
+        <!-- Match Filter Tabs -->
+        <div class="flex justify-center items-center mb-6 pb-4 border-b border-gray-200 dark:border-gray-700">
+          <button onclick="selectTab('important')" id="pill-important" class="league-pill tab-important text-xs font-bold uppercase px-4 md:px-6 py-2.5 rounded shadow-sm transition-all justify-center whitespace-normal md:whitespace-nowrap flex flex-col md:flex-row items-center gap-1 text-center">
+            <span>Today's most important matches</span><span id="header-date" class="text-[#fac912]"></span>
+          </button>
+        </div>
+
+        <!-- MATCH CARDS CONTAINER -->
+        <div class="grid grid-cols-1 gap-4" id="matches-container">
+          <!-- Match Cards will be dynamically injected here from matches.js -->
+        </div>
+
+      </div><!-- /main-wrapper -->
+    </main>
+
+    <!-- ══════════════════════════════════════════════════
+     SEO CONTENT SECTION
+    ══════════════════════════════════════════════════ -->
+    <section class="py-14 md:py-20 px-4 md:px-16 bg-[#f8fafc] dark:bg-[#0f172a] border-t border-gray-200 dark:border-gray-800">
+      <div class="max-w-[1000px] mx-auto">
+        <h2 class="text-2xl md:text-4xl font-bold text-gray-800 dark:text-slate-100 mb-8 md:mb-10 tracking-tight">
+          Yalla Live – Your Ultimate Football Streaming Hub
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6 text-gray-600 dark:text-slate-400 leading-relaxed text-sm md:text-base">
+          <div class="space-y-5">
+            <p>
+              Welcome to <strong class="text-primary font-bold">Yalla Live</strong>, your premium home for football streaming. Whether you're searching for <strong>Yalla Shoot</strong> links, the latest <strong>Koora Live</strong> scores, or <strong>Yalla TV</strong> broadcasts, we aggregate every match in one lightning-fast interface.
+            </p>
+            <p>
+              Our platform is engineered for mobile-first access — so you can watch <strong>Live Soccer TV HD Streaming</strong> without buffering or clutter. Enjoy <strong>Yalla Live football</strong> from the Premier League, Champions League, La Liga, and beyond.
+            </p>
+            <p>
+              Get <strong>Yalla Shoot live stream of today's matches</strong> updated second by second. Every goal, card, and substitution reaches you before the crowd finishes cheering.
+            </p>
+          </div>
+          <div class="space-y-5">
+            <p>
+              <strong>Yalla Koora</strong> fans will find our schedule view perfect for planning viewing sessions. We list broadcaster details — from beIN Sports to Sky Sports — alongside every fixture so you know exactly where to tune in.
+            </p>
+            <p>
+              <strong>Yalla Shoot TV</strong> integrations ensure that international audiences, especially across the MENA region, have uninterrupted access to top-tier football. Combined with <strong>Koora Live</strong> data feeds, our scores are always accurate.
+            </p>
+
+          </div>
+        </div>
+
+        <!-- FAQ – boosts long-tail SEO -->
+        <div class="mt-12 space-y-4">
+          <h3 class="text-lg md:text-2xl font-bold text-gray-800 dark:text-slate-100 mb-6">Frequently Asked Questions</h3>
+
+          <details class="border border-gray-200 dark:border-gray-800 rounded-xl bg-white dark:bg-[#1e293b] overflow-hidden group">
+            <summary class="flex justify-between items-center px-5 py-4 cursor-pointer font-bold text-sm text-gray-800 dark:text-slate-200 list-none select-none">
+              What is Yalla Live?
+              <span class="material-symbols-outlined text-primary transition-transform group-open:rotate-180" style="font-size:20px;">expand_more</span>
+            </summary>
+            <p class="px-5 pb-4 text-sm text-gray-600 dark:text-slate-400 leading-relaxed">
+              Yalla Live is a popular live football streaming platform widely used across the Arab world and beyond. It provides free live streams of today's matches, real-time scores, and fixture schedules for leagues including the Premier League, Champions League, La Liga, Serie A, and more.
+            </p>
+          </details>
+
+          <details class="border border-gray-200 dark:border-gray-800 rounded-xl bg-white dark:bg-[#1e293b] overflow-hidden group">
+            <summary class="flex justify-between items-center px-5 py-4 cursor-pointer font-bold text-sm text-gray-800 dark:text-slate-200 list-none select-none">
+              How do I watch Yalla Shoot live stream on mobile?
+              <span class="material-symbols-outlined text-primary transition-transform group-open:rotate-180" style="font-size:20px;">expand_more</span>
+            </summary>
+            <p class="px-5 pb-4 text-sm text-gray-600 dark:text-slate-400 leading-relaxed">
+              To watch <strong>Yalla Shoot live stream of today's matches on mobile</strong>, simply open Yalla Live in your mobile browser, find the live match card, and tap "Watch on Yalla Live." Our mobile-optimised layout ensures smooth streaming without the need to install any app.
+            </p>
+          </details>
+
+          <details class="border border-gray-200 dark:border-gray-800 rounded-xl bg-white dark:bg-[#1e293b] overflow-hidden group">
+            <summary class="flex justify-between items-center px-5 py-4 cursor-pointer font-bold text-sm text-gray-800 dark:text-slate-200 list-none select-none">
+              What is the difference between Yalla Koora and Koora Live?
+              <span class="material-symbols-outlined text-primary transition-transform group-open:rotate-180" style="font-size:20px;">expand_more</span>
+            </summary>
+            <p class="px-5 pb-4 text-sm text-gray-600 dark:text-slate-400 leading-relaxed">
+              <strong>Yalla Koora</strong> (يلا كورة) and <strong>Koora Live</strong> (كورة لايف) are two of the most-searched Arabic football streaming terms. Both refer to platforms and aggregators that provide live football coverage. Our platform integrates data from both sources to give you comprehensive, real-time match information.
+            </p>
+          </details>
+
+          <details class="border border-gray-200 dark:border-gray-800 rounded-xl bg-white dark:bg-[#1e293b] overflow-hidden group">
+            <summary class="flex justify-between items-center px-5 py-4 cursor-pointer font-bold text-sm text-gray-800 dark:text-slate-200 list-none select-none">
+              Is Yalla TV the same as Yalla Shoot TV?
+              <span class="material-symbols-outlined text-primary transition-transform group-open:rotate-180" style="font-size:20px;">expand_more</span>
+            </summary>
+            <p class="px-5 pb-4 text-sm text-gray-600 dark:text-slate-400 leading-relaxed">
+              <strong>Yalla TV</strong> and <strong>Yalla Shoot TV</strong> are related but distinct services. Yalla TV is a broader sports coverage channel, while Yalla Shoot TV specifically focuses on live football match streams and scores. Both are accessible through our unified interface.
+            </p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════
+     FOOTER
+    ══════════════════════════════════════════════════ -->
+    <footer class="border-t border-[var(--header-border)] bg-[var(--header-bg)] transition-colors duration-300">
+      <div class="px-6 md:px-16 py-10 w-full max-w-[1200px] mx-auto flex flex-col md:flex-row md:justify-between items-center md:items-start gap-8">
+        
+        <!-- Left Side: Logo & Description -->
+        <div class="flex flex-col items-center md:items-start gap-4 max-w-sm">
+          <img src="logos/logo-unified.png" alt="Yalla Live Logo" class="h-14 md:h-16 w-auto object-contain select-none pointer-events-none" />
+          <p class="text-[11px] text-gray-500 dark:text-slate-400 text-center md:text-left leading-relaxed">
+            Your ultimate destination for <strong>Yalla Live</strong>, <strong>Yalla Shoot</strong>, <strong>Koora Live</strong>, <strong>Yalla Koora</strong> &amp; <strong>Yalla Shoot TV</strong> football live match streams and real-time scores.
+          </p>
+        </div>
+        
+        <!-- Right Side: Links & Copyright -->
+        <div class="flex flex-col items-center md:items-end gap-6 md:gap-8">
+          <!-- Footer Navigation Links -->
+          <nav class="flex flex-wrap justify-center md:justify-end gap-6 md:gap-8">
+            <a class="text-gray-500 dark:text-slate-400 hover:text-primary transition-colors text-xs font-bold uppercase tracking-wider" href="terms.html">Terms</a>
+            <a class="text-gray-500 dark:text-slate-400 hover:text-primary transition-colors text-xs font-bold uppercase tracking-wider" href="privacy.html">Privacy Policy</a>
+            <a class="text-gray-500 dark:text-slate-400 hover:text-primary transition-colors text-xs font-bold uppercase tracking-wider" href="contact.html">Contact</a>
+          </nav>
+          <!-- Copyright Section -->
+          <div class="text-gray-400 dark:text-slate-500 text-[10px] font-bold tracking-widest text-center md:text-right">
+            © 2026 YALLA LIVE. ALL RIGHTS RESERVED.
+          </div>
+        </div>
+        
+      </div>
+    </footer>
+
+
+
+    <!-- ══════════════════════════════════════════════════
+     SCHEMA.ORG JSON-LD
+    ══════════════════════════════════════════════════ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Yalla Live Football",
+      "url": "https://voltstream.com",
+      "description": "Yalla Live – live streaming of today's football matches on mobile. Yalla Shoot, Koora Live, Yalla Koora, Yalla Shoot TV, Yalla TV.",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://voltstream.com/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is Yalla Live?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yalla Live is a popular live football streaming platform widely used across the Arab world. It provides free live streams of today's matches, real-time scores, and fixture schedules for major leagues."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I watch Yalla Shoot live stream on mobile?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Open Yalla Live in your mobile browser, find the live match card, and tap Watch on Yalla Live. Our mobile-optimised layout ensures smooth streaming without any app installation."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the difference between Yalla Koora and Koora Live?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yalla Koora and Koora Live are two popular Arabic football streaming search terms. Both refer to platforms providing live football coverage. Our platform integrates data from both sources."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is Yalla TV the same as Yalla Shoot TV?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yalla TV is a broader streaming service while Yalla Shoot TV focuses specifically on football match streams and live scores. Both are accessible through our platform."
+          }
+        }
+      ]
+    }
+    </script>
+
+    <!-- JS Logic for Theme Toggling & Dynamic Rendering -->
+    <script>
+      // 1. Theme Switcher with Persistence
+      const themeToggleBtn = document.getElementById('theme-toggle');
+      
+      function initTheme() {
+        const storedTheme = localStorage.getItem('theme');
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        if (storedTheme === 'light' || (!storedTheme && !systemPrefersDark)) {
+          document.documentElement.classList.remove('dark');
+          themeToggleBtn.innerHTML = '<span class="material-symbols-outlined">light_mode</span>';
+        } else {
+          document.documentElement.classList.add('dark');
+          themeToggleBtn.innerHTML = '<span class="material-symbols-outlined">dark_mode</span>';
+        }
+      }
+      
+      themeToggleBtn.addEventListener('click', () => {
+        if (document.documentElement.classList.contains('dark')) {
+          document.documentElement.classList.remove('dark');
+          localStorage.setItem('theme', 'light');
+          themeToggleBtn.innerHTML = '<span class="material-symbols-outlined">light_mode</span>';
+        } else {
+          document.documentElement.classList.add('dark');
+          localStorage.setItem('theme', 'dark');
+          themeToggleBtn.innerHTML = '<span class="material-symbols-outlined">dark_mode</span>';
+        }
+      });
+      
+      initTheme();
+
+      // 2. Dynamic Matches Rendering and Filtering
+      const matchesContainer = document.getElementById('matches-container');
+      
+      // Convert Dhaka Time (UTC+6) to User System Local Time
+      function convertDhakaTimeToLocal(timeStr, dayOffsetStr) {
+        try {
+          const now = new Date();
+          let targetDate = new Date();
+          
+          if (dayOffsetStr === 'tomorrow') {
+            targetDate.setDate(now.getDate() + 1);
+          } else if (dayOffsetStr === 'yesterday') {
+            targetDate.setDate(now.getDate() - 1);
+          }
+          
+          let hours = 0;
+          let minutes = 0;
+          
+          const match12 = timeStr.match(/^(\d+):(\d+)\s*(AM|PM)$/i);
+          const match24 = timeStr.match(/^(\d+):(\d+)$/);
+          
+          if (match12) {
+            hours = parseInt(match12[1], 10);
+            minutes = parseInt(match12[2], 10);
+            const ampm = match12[3].toUpperCase();
+            if (ampm === 'PM' && hours < 12) hours += 12;
+            if (ampm === 'AM' && hours === 12) hours = 0;
+          } else if (match24) {
+            hours = parseInt(match24[1], 10);
+            minutes = parseInt(match24[2], 10);
+          } else {
+            return timeStr;
+          }
+          
+          const year = targetDate.getFullYear();
+          const month = String(targetDate.getMonth() + 1).padStart(2, '0');
+          const date = String(targetDate.getDate()).padStart(2, '0');
+          const hh = String(hours).padStart(2, '0');
+          const mm = String(minutes).padStart(2, '0');
+          
+          // Construct ISO timestamp assuming Dhaka timezone (+06:00)
+          const dhakaIsoStr = `${year}-${month}-${date}T${hh}:${mm}:00+06:00`;
+          const localDate = new Date(dhakaIsoStr);
+          
+          if (isNaN(localDate.getTime())) return timeStr;
+          
+          return localDate.toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true
+          });
+        } catch (e) {
+          return timeStr;
+        }
+      }
+      
+      function renderMatches(dayFilter, importantOnly) {
+        matchesContainer.innerHTML = '';
+        
+        // Filter match data
+        const filtered = MATCHES_DATA.filter(match => {
+          if (importantOnly) {
+            return match.day === 'today' && match.isImportant;
+          }
+          return match.day === dayFilter;
+        });
+        
+        if (filtered.length === 0) {
+          let emptyMessage = "There is no match today.";
+          if (dayFilter === 'tomorrow') {
+            emptyMessage = "There is no match tomorrow.";
+          } else if (dayFilter === 'yesterday') {
+            emptyMessage = "There is no match yesterday.";
+          }
+          
+          matchesContainer.innerHTML = `
+            <div class="text-center py-12 text-gray-500 dark:text-slate-400 font-medium">
+              ${emptyMessage}
+            </div>
+          `;
+          return;
+        }
+        
+        filtered.forEach(match => {
+          const displayLocalTime = convertDhakaTimeToLocal(match.time, match.day);
+          
+          // Hide badge if the match hasn't started yet
+          const showStatus = match.status && 
+                             match.status !== "It hasn't started yet." && 
+                             match.status !== "Not started";
+          
+          const statusBadgeHtml = showStatus ? 
+            `<span class="match-info-badge text-[9px] md:text-xs px-2 py-0.5" style="white-space: nowrap;">${match.status}</span>` : '';
+          
+          const hasLink = match.link && match.link.trim() !== "";
+          const cardTag = hasLink ? 'a' : 'article';
+          const cardAttrs = hasLink ? `onclick="handleMatchClick(event, '${match.link}')" class="custom-match-card block cursor-pointer hover:no-underline"` : `class="custom-match-card"`;
+
+          const cardHtml = `
+            <${cardTag} ${cardAttrs}>
+              <!-- Team Names & Logos + Middle Details -->
+              <div class="flex flex-row items-center justify-between p-4 md:p-5">
+                
+                <!-- Main Flow: Stacked on Mobile, Row on Desktop -->
+                <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between w-[68%] md:w-full gap-2 md:gap-0">
+                  <!-- Home Team -->
+                  <div class="flex flex-row items-center gap-3 w-full md:w-[38%] justify-start">
+                    <img src="${match.homeTeam.logo}" alt="${match.homeTeam.name}" class="team-logo-img w-8 h-8 md:w-11 md:h-11 object-contain flex-shrink-0" onerror="this.src='logos/dr-congo.svg'" />
+                    <span class="text-xs md:text-sm font-bold text-gray-800 dark:text-slate-100 line-clamp-1">${match.homeTeam.name}</span>
+                  </div>
+                  
+                  <!-- Desktop Center Time (Hidden on Mobile) -->
+                  <div class="hidden md:flex flex-col items-center justify-center gap-1.5 w-[24%] text-center">
+                    <span class="text-sm md:text-base font-extrabold tracking-tight text-gray-900 dark:text-white leading-none">${displayLocalTime}</span>
+                    ${statusBadgeHtml}
+                  </div>
+                  
+                  <!-- Away Team -->
+                  <div class="flex flex-row items-center gap-3 w-full md:w-[38%] justify-start text-left md:text-right md:flex-row-reverse">
+                    <img src="${match.awayTeam.logo}" alt="${match.awayTeam.name}" class="team-logo-img w-8 h-8 md:w-11 md:h-11 object-contain flex-shrink-0" onerror="this.src='logos/cameroon.svg'" />
+                    <span class="text-xs md:text-sm font-bold text-gray-800 dark:text-slate-100 line-clamp-1">${match.awayTeam.name}</span>
+                  </div>
+                </div>
+                
+                <!-- Mobile Center Time (Hidden on Desktop) -->
+                <div class="flex md:hidden flex-col items-center justify-center gap-1 w-[32%] text-center">
+                  <span class="text-xs font-extrabold tracking-tight text-gray-900 dark:text-white leading-none">${displayLocalTime}</span>
+                  ${statusBadgeHtml}
+                </div>
+                
+              </div>
+              <!-- Footer Information (League Name only) -->
+              <div class="border-t border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-slate-800/20 py-2.5 text-center px-4">
+                <span class="text-xs font-semibold text-gray-500 dark:text-slate-400 block truncate">
+                  ${match.league}
+                </span>
+              </div>
+            </${cardTag}>
+          `;
+          matchesContainer.insertAdjacentHTML('beforeend', cardHtml);
+        });
+      }
+      
+      // 3. Tab Pill Selection logic
+      function selectTab(tabName) {
+        // Reset all pills
+        const pills = ['tomorrow', 'today', 'yesterday', 'important'];
+        pills.forEach(pill => {
+          const btn = document.getElementById(`pill-${pill}`);
+          if (btn) {
+            btn.style.transform = 'scale(1)';
+            btn.style.opacity = '0.75';
+            btn.style.border = 'none';
+          }
+        });
+        
+        // Highlight active pill
+        const activeBtn = document.getElementById(`pill-${tabName}`);
+        if (activeBtn) {
+          activeBtn.style.transform = 'scale(1.05)';
+          activeBtn.style.opacity = '1';
+          activeBtn.style.border = '2px solid #ffffff';
+        }
+        
+        // Render matching data
+        if (tabName === 'important') {
+          renderMatches('today', true);
+        } else {
+          renderMatches(tabName, false);
+        }
+      }
+      
+      // Initial render: Today's most important matches
+      selectTab('important');
+      
+      // FAQ accordion toggle logic
+      document.querySelectorAll('details').forEach((d) => {
+        d.addEventListener('toggle', () => {});
+      });
+
+      // 4. Ad Redirection Modal Controller
+      let redirectTimer = null;
+      
+      function handleMatchClick(event, redirectUrl) {
+        if (event) {
+          event.preventDefault();
+        }
+        
+        // Hide scrollbars on body when modal is open
+        document.body.style.overflow = 'hidden';
+        
+        // Show Modal (Brings off-screen modal on-screen instantly with 0 opacity)
+        const modal = document.getElementById('redirect-modal');
+        const card = document.getElementById('redirect-card');
+        
+        modal.style.left = '0';
+        modal.style.top = '0';
+        modal.style.width = '100%';
+        modal.style.height = '100%';
+        modal.style.overflow = 'auto';
+        modal.style.pointerEvents = 'auto';
+        modal.style.opacity = '0';
+        
+        // Force reflow
+        modal.offsetHeight;
+        
+        // Smoothly fade in overlay and elastic scale card!
+        modal.style.opacity = '1';
+        if (card) {
+          card.classList.remove('scale-90', 'opacity-0');
+          card.classList.add('scale-100', 'opacity-100');
+        }
+        
+        // Responsive ad scaling update
+        scaleAd();
+        
+        // Reset header texts
+        document.getElementById('modal-title').innerText = "Preparing your Live Football Stream...";
+        document.getElementById('modal-desc').innerText = "Please wait while we establish a secure high-speed connection.";
+        
+        // Show countdown circle & hide manual link container
+        const countdownCircle = document.getElementById('countdown-circle');
+        const manualRedirectContainer = document.getElementById('manual-redirect-container');
+        countdownCircle.classList.remove('hidden');
+        manualRedirectContainer.classList.add('hidden');
+        
+        // Reset countdown to 10 seconds!
+        let count = 10;
+        const countdownEl = document.getElementById('countdown-number');
+        countdownEl.innerText = count;
+        
+        // Clear any old active timer
+        if (redirectTimer) {
+          clearInterval(redirectTimer);
+        }
+        
+        // Start countdown
+        redirectTimer = setInterval(() => {
+          count--;
+          countdownEl.innerText = count;
+          
+          if (count <= 0) {
+            clearInterval(redirectTimer);
+            redirectTimer = null;
+            
+            // Redirect in a new tab strictly AFTER 10 seconds!
+            const newWindow = window.open(redirectUrl, '_blank');
+            
+            // If the browser popup blocker intercepts it
+            if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+              // Hide countdown circle
+              countdownCircle.classList.add('hidden');
+              
+              // Update Header Text to inform user
+              document.getElementById('modal-title').innerText = "Your Stream is Ready!";
+              document.getElementById('modal-desc').innerText = "Your secure high-speed connection is ready. Click below to open the stream.";
+              
+              // Set href and show the button
+              const manualBtn = document.getElementById('manual-redirect-btn');
+              manualBtn.href = redirectUrl;
+              manualRedirectContainer.classList.remove('hidden');
+            } else {
+              // Redirect succeeded! Clean up and close modal smoothly
+              closeRedirectModal();
+            }
+          }
+        }, 1000);
+      }
+      
+      function closeRedirectModal() {
+        const modal = document.getElementById('redirect-modal');
+        const card = document.getElementById('redirect-card');
+        
+        // 1. Smoothly fade out overlay and scale down card
+        modal.style.opacity = '0';
+        if (card) {
+          card.classList.remove('scale-100', 'opacity-100');
+          card.classList.add('scale-90', 'opacity-0');
+        }
+        document.body.style.overflow = '';
+        
+        // 2. Wait for 500ms transition completion, then snap offscreen
+        setTimeout(() => {
+          modal.style.left = '-9999px';
+          modal.style.top = '-9999px';
+          modal.style.width = '728px';
+          modal.style.height = '90px';
+          modal.style.overflow = 'hidden';
+          modal.style.pointerEvents = 'none';
+          modal.style.opacity = '1'; // Restore full opacity for off-screen preloads
+        }, 500);
+      }
+
+      function closeModalAfterClick() {
+        closeRedirectModal();
+      }
+      // ══════════════════════════════════════════════════
+      // PROGRAMMATIC SEO (pSEO) ENGINE
+      // ══════════════════════════════════════════════════
+      function runProgrammaticSEO() {
+        if (typeof MATCHES_DATA === 'undefined' || !Array.isArray(MATCHES_DATA)) return;
+        
+        // 1. Extract today's important matches
+        const todayMatches = MATCHES_DATA.filter(m => m.day === 'today' && m.isImportant);
+        if (todayMatches.length === 0) return;
+        
+        // 2. Select top featured match for Title/Meta tag targeting
+        const featuredMatch = todayMatches[0];
+        const matchTitleStr = `${featuredMatch.homeTeam.name} vs ${featuredMatch.awayTeam.name}`;
+        
+        // 3. Dynamically rewrite Titles to capture active match search volume
+        const baseTitle = `Yalla Live – Watch ${matchTitleStr} Live Stream | Yalla Shoot`;
+        document.title = baseTitle;
+        
+        // Update Open Graph and Twitter card titles
+        const ogTitle = document.querySelector('meta[property="og:title"]');
+        if (ogTitle) ogTitle.setAttribute('content', baseTitle);
+        const twitterTitle = document.querySelector('meta[name="twitter:title"]');
+        if (twitterTitle) twitterTitle.setAttribute('content', baseTitle);
+        
+        // 4. Dynamically rewrite Description snippets
+        const baseDesc = `Watch ${matchTitleStr} live on Yalla Live. Enjoy high-quality Yalla Shoot live streaming, real-time scores, and fixtures on mobile in HD. Watch live now!`;
+        const metaDesc = document.querySelector('meta[name="description"]');
+        if (metaDesc) metaDesc.setAttribute('content', baseDesc);
+        const ogDesc = document.querySelector('meta[property="og:description"]');
+        if (ogDesc) ogDesc.setAttribute('content', baseDesc);
+        const twitterDesc = document.querySelector('meta[name="twitter:description"]');
+        if (twitterDesc) twitterDesc.setAttribute('content', baseDesc);
+        
+        // 5. Programmatically inject dynamic featured match banner in SEO section
+        const seoSection = document.querySelector('.space-y-5'); // left column of the SEO section
+        if (seoSection) {
+          const bannerHtml = `
+            <div class="p-4 bg-slate-100 dark:bg-slate-800/50 border-l-4 border-[#ee335f] rounded-r-xl my-4">
+              <span class="text-xs uppercase tracking-wider font-extrabold text-[#ee335f] block mb-1">Featured Matches Today</span>
+              <p class="text-sm text-gray-700 dark:text-slate-300 leading-relaxed m-0">
+                Tune in to watch high-profile clashes today, including <strong>${todayMatches.map(m => `${m.homeTeam.name} vs ${m.awayTeam.name}`).join(', ')}</strong>. Access every live connection directly through our match listing above.
+              </p>
+            </div>
+          `;
+          seoSection.insertAdjacentHTML('afterbegin', bannerHtml);
+        }
+        
+        // 6. Programmatically build FAQ JSON-LD Schema matching today's active matches
+        const faqEntities = todayMatches.slice(0, 3).map(m => ({
+          "@type": "Question",
+          "name": `How to watch ${m.homeTeam.name} vs ${m.awayTeam.name} live stream free?`,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": `You can watch ${m.homeTeam.name} vs ${m.awayTeam.name} live stream for free on Yalla Live. Simply scroll up to today's matches, find the card for ${m.homeTeam.name} vs ${m.awayTeam.name}, and click to start streaming instantly.`
+          }
+        }));
+        
+        const faqSchemaScript = document.createElement('script');
+        faqSchemaScript.type = 'application/ld+json';
+        faqSchemaScript.text = JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": faqEntities
+        });
+        document.head.appendChild(faqSchemaScript);
+      }
+      
+      // ══════════════════════════════════════════════════
+      // GOOGLE SITELINKS NAVIGATION SCHEMA INJECTOR
+      // ══════════════════════════════════════════════════
+      function injectSiteNavigationSchema() {
+        const origin = window.location.origin;
+        if (typeof MATCHES_DATA === 'undefined' || !Array.isArray(MATCHES_DATA)) return;
+        
+        // 1. Get today's important matches
+        const todayMatches = MATCHES_DATA.filter(m => m.day === 'today' && m.isImportant);
+        
+        // 2. Programmatically map top 4 live matches to Google sitelink targets
+        const navElements = todayMatches.slice(0, 4).map((m, idx) => ({
+          "@type": "SiteNavigationElement",
+          "position": idx + 1,
+          "name": `${m.homeTeam.name} vs ${m.awayTeam.name} Live`,
+          "description": `Watch today's high-speed live stream of ${m.homeTeam.name} vs ${m.awayTeam.name} on mobile. Real-time Yalla Shoot links and scores.`,
+          "url": `${origin}/index.html#match-${m.id}`
+        }));
+        
+        // 3. Fallback standard list item if no active matches are set
+        if (navElements.length === 0) {
+          navElements.push({
+            "@type": "SiteNavigationElement",
+            "position": 1,
+            "name": "Live Football Schedule Today",
+            "description": "Watch free live streaming of today's most important matches on Yalla Live.",
+            "url": `${origin}/index.html`
+          });
+        }
+        
+        const schema = {
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "WebSite",
+              "@id": `${origin}/#website`,
+              "url": origin,
+              "name": "Yalla Live",
+              "publisher": {
+                "@type": "Organization",
+                "name": "Yalla Live",
+                "logo": {
+                  "@type": "ImageObject",
+                  "url": `${origin}/logos/logo-unified.png`
+                }
+              }
+            },
+            {
+              "@type": "ItemList",
+              "@id": `${origin}/#navigation`,
+              "name": "Today's Live Football Match Sitelinks",
+              "itemListElement": navElements
+            }
+          ]
+        };
+        
+        const script = document.createElement('script');
+        script.type = 'application/ld+json';
+        script.text = JSON.stringify(schema);
+        document.head.appendChild(script);
+      }
+      
+      function updateHeaderDate() {
+        const today = new Date();
+        const options = { month: 'short', day: 'numeric', year: 'numeric' };
+        const formattedDate = today.toLocaleDateString('en-US', options);
+        const dateEl = document.getElementById('header-date');
+        if (dateEl) {
+          dateEl.innerText = `- ${formattedDate}`;
+        }
+      }
+      
+      // Bootstrap the programmatic SEO & Sitelinks engines
+      window.addEventListener('DOMContentLoaded', () => {
+        runProgrammaticSEO();
+        injectSiteNavigationSchema();
+        updateHeaderDate();
+      });
+
+      function scaleAd() {
+        const scaler = document.getElementById('ad-scaler');
+        if (!scaler) return;
+        const parentWidth = scaler.parentElement.clientWidth;
+        if (parentWidth < 728) {
+          const scale = parentWidth / 728;
+          scaler.style.transform = `scale(${scale})`;
+        } else {
+          scaler.style.transform = 'scale(1)';
+        }
+      }
+      
+      window.addEventListener('resize', scaleAd);
+      window.addEventListener('DOMContentLoaded', scaleAd);
+      // Run it standard on load to be absolutely safe
+      window.addEventListener('load', scaleAd);
+    </script>
+
+    <!-- ══════════════════════════════════════════════════
+     AD REDIRECTION MODAL
+    ══════════════════════════════════════════════════ -->
+    <div id="redirect-modal" class="fixed flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md transition-opacity duration-300" style="position: fixed; left: -9999px; top: -9999px; width: 728px; height: 90px; overflow: hidden; z-index: 100; pointer-events: none;">
+      <div id="redirect-card" class="relative w-full max-w-[800px] bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl shadow-2xl p-6 md:p-8 flex flex-col items-center gap-6 overflow-hidden transform scale-90 opacity-0 bouncy-pop">
+        
+        <!-- Background decorative gradient orb -->
+        <div class="absolute -top-24 -left-24 w-48 h-48 rounded-full bg-[#ee335f]/10 blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-24 -right-24 w-48 h-48 rounded-full bg-[#fac912]/10 blur-3xl pointer-events-none"></div>
+        
+        <!-- Header & Countdown -->
+        <div class="text-center space-y-3 z-10">
+          <h3 id="modal-title" class="text-lg md:text-xl font-bold text-gray-900 dark:text-white tracking-tight">
+            Preparing your Live Football Stream...
+          </h3>
+          <p id="modal-desc" class="text-xs md:text-sm text-gray-500 dark:text-slate-400">
+            Please wait while we establish a secure high-speed connection.
+          </p>
+        </div>
+
+        <!-- Animated Countdown Circle -->
+        <div id="countdown-circle" class="relative flex items-center justify-center w-10 h-10 md:w-14 md:h-14 rounded-full border-4 border-gray-200 dark:border-slate-800 z-10 shadow-inner">
+          <div class="absolute inset-0 rounded-full border-4 border-t-[#ee335f] border-r-[#fac912] animate-spin"></div>
+          <span id="countdown-number" class="text-sm md:text-lg font-black text-[#ee335f] dark:text-[#fac912] transition-all duration-300 transform scale-110">10</span>
+        </div>
+
+        <!-- Manual CTA Button (shown only when countdown reaches 0 or if popup blocker is active) -->
+        <div id="manual-redirect-container" class="hidden z-10 w-full max-w-[280px]">
+          <a id="manual-redirect-btn" href="#" target="_blank" onclick="closeModalAfterClick()" class="w-full flex items-center justify-center gap-2 bg-[#ee335f] hover:bg-[#d1224d] text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:scale-105 select-none animate-pulse">
+            <span class="material-symbols-outlined">play_circle</span>
+            Watch Live Stream
+          </a>
+        </div>
+
+        <!-- Ad Banner Area (Saves exactly 728x90 layout space to avoid layout shift) -->
+        <div class="w-full flex flex-col items-center gap-2 z-10 mt-2">
+          <span class="text-[9px] uppercase tracking-wider text-gray-400 dark:text-slate-500 font-semibold">Advertisement</span>
+          <div class="w-full max-w-[728px] min-h-[90px] flex items-center justify-center bg-gray-50 dark:bg-slate-950/40 border border-gray-200/50 dark:border-slate-800/30 rounded-xl overflow-hidden shadow-inner p-1">
+            <!-- Scaler wrapper: declares a full 728x90 screen space for the ad script, then visually scales it down on mobile viewports -->
+            <div id="ad-scaler" class="origin-center transition-transform duration-300" style="width: 728px; min-width: 728px; height: 90px; min-height: 90px;">
+              <div id="ad-container" class="w-full h-full flex justify-center items-center">
+                <!-- Pre-loaded ad block renders instantly on load via separate ad.js -->
+                <script src="ad.js"></script>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Direct Skip Warning -->
+        <div class="text-center z-10">
+          <p class="text-[10px] text-gray-400 dark:text-slate-500">
+            Stream will open automatically. Do not close this page.
+          </p>
+        </div>
+        
+      </div>
+    </div>
+  </body>
+</html>
