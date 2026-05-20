@@ -191,20 +191,40 @@ nav a { justify-content: center; }
 }
 
 /* ── WORLD CUP TICKER MARQUEE ── */
+.wc-countdown-bar {
+  background: linear-gradient(95deg, #0b0f19 0%, #171337 40%, #0b0f19 80%, #0b0f19 100%);
+  background-size: 200% 200%;
+  animation: gradient-flow 12s ease infinite;
+  border-bottom: 1.5px solid rgba(238, 51, 95, 0.25);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+@keyframes gradient-flow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+#wc-timer {
+  text-shadow: 0 0 12px rgba(250, 201, 18, 0.5);
+  letter-spacing: 0.08em;
+}
 .marquee-container {
   display: flex;
   overflow: hidden;
   white-space: nowrap;
   width: 100%;
-  mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
-  -webkit-mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
 }
 .marquee-content {
   display: flex;
   flex-shrink: 0;
-  animation: marquee-roll 45s linear infinite;
-  gap: 32px;
+  animation: marquee-roll 48s linear infinite;
+  gap: 36px;
   padding-left: 16px;
+}
+/* Pause rolling animation on hover for premium user interaction */
+.marquee-container:hover .marquee-content {
+  animation-play-state: paused;
 }
 .marquee-content span {
   display: inline-flex;
@@ -212,7 +232,7 @@ nav a { justify-content: center; }
   gap: 8px;
   font-size: 13px;
   font-weight: 800;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
 }
 @media (min-width: 768px) {
   .marquee-content span {
