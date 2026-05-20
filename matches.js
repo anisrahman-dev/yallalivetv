@@ -32,5 +32,22 @@ const MATCHES_DATA = [
       name: "Serbia",
       logo: "logos/serbia.png"
     }
+  },
+  {
+    id: 3,
+    league: "UEFA Champions League",
+    time: "3:00 AM",
+    status: "",
+    day: "today",
+    isImportant: true,
+    link: "https://t.me",
+    homeTeam: {
+      name: "Tottenham Hotspur",
+      logo: "logos/tottenham.png"
+    },
+    awayTeam: {
+      name: "Liverpool",
+      logo: "logos/liverpool.png"
+    }
   }
 ];
