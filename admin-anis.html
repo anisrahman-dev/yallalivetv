@@ -63,26 +63,29 @@
     <section id="admin-ui" class="hidden">
       <!-- Header -->
       <header class="sticky top-0 z-40 bg-surface/95 backdrop-blur border-b border-slate-700/50">
-        <div class="max-w-[1100px] mx-auto px-4 py-3 flex items-center justify-between gap-3 flex-wrap">
-          <div class="flex items-center gap-2">
-            <img src="logos/logo-unified.png" alt="" class="h-9 w-auto" />
+        <div class="max-w-[1100px] mx-auto px-3 sm:px-4 py-3 flex items-center justify-between gap-2 sm:gap-3">
+          <div class="flex items-center gap-2 min-w-0">
+            <img src="logos/logo-unified.png" alt="" class="h-8 sm:h-9 w-auto flex-shrink-0" />
             <span class="text-xs font-extrabold uppercase tracking-widest text-primary">Admin</span>
           </div>
-          <div class="flex items-center gap-2">
-            <span id="dirty-indicator" class="hidden text-[10px] font-bold uppercase tracking-wider text-accent">● Unsaved</span>
-            <button id="btn-reload" class="text-xs font-bold uppercase tracking-wider px-3 py-2 rounded-xl bg-slate-700/60 hover:bg-slate-700 transition">Reload from GitHub</button>
-            <button id="btn-publish" class="text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-xl bg-primary hover:bg-primary/90 transition flex items-center gap-1.5">
-              <span class="material-symbols-outlined text-base">cloud_upload</span>
-              Publish
+          <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+            <span id="dirty-indicator" class="hidden text-[10px] font-bold uppercase tracking-wider text-accent" title="Unsaved changes">●<span class="hidden sm:inline ml-1">Unsaved</span></span>
+            <button id="btn-reload" class="text-xs font-bold uppercase tracking-wider px-2.5 sm:px-3 py-2 rounded-xl bg-slate-700/60 hover:bg-slate-700 transition flex items-center gap-1.5" title="Reload from GitHub">
+              <span class="material-symbols-outlined text-base">refresh</span>
+              <span class="hidden md:inline">Reload</span>
             </button>
-            <button id="btn-logout" class="text-xs font-bold uppercase tracking-wider px-3 py-2 rounded-xl bg-slate-700/40 hover:bg-slate-700 transition" title="Sign out">
+            <button id="btn-publish" class="text-xs font-bold uppercase tracking-wider px-3 sm:px-4 py-2 rounded-xl bg-primary hover:bg-primary/90 transition flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-base">cloud_upload</span>
+              <span class="hidden sm:inline">Publish</span>
+            </button>
+            <button id="btn-logout" class="text-xs font-bold uppercase tracking-wider px-2.5 sm:px-3 py-2 rounded-xl bg-slate-700/40 hover:bg-slate-700 transition" title="Sign out">
               <span class="material-symbols-outlined text-base align-middle">logout</span>
             </button>
           </div>
         </div>
       </header>
 
-      <main class="max-w-[1100px] mx-auto px-4 py-6 space-y-6">
+      <main class="max-w-[1100px] mx-auto px-3 sm:px-4 py-4 sm:py-6 space-y-4 sm:space-y-6">
         <!-- GitHub Settings Panel -->
         <details class="bg-surface border border-slate-700/50 rounded-2xl overflow-hidden">
           <summary class="cursor-pointer select-none px-5 py-3 text-xs font-bold uppercase tracking-wider text-slate-300 hover:text-white flex items-center justify-between">
@@ -92,7 +95,7 @@
             </span>
             <span id="conn-status" class="text-[10px] text-slate-500"></span>
           </summary>
-          <div class="px-5 pb-5 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="px-4 sm:px-5 pb-5 grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
             <div>
               <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Owner</label>
               <input id="gh-owner" type="text" class="w-full bg-slate-900/80 border border-slate-700 rounded-lg px-3 py-2 text-sm" />
@@ -111,19 +114,19 @@
               </label>
               <input id="gh-token" type="password" autocomplete="off" class="w-full bg-slate-900/80 border border-slate-700 rounded-lg px-3 py-2 text-sm" placeholder="ghp_…" />
             </div>
-            <div class="md:col-span-2 flex items-center gap-2">
-              <button id="btn-save-settings" class="text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-lg bg-slate-700 hover:bg-slate-600 transition">Save Settings</button>
-              <button id="btn-test-connection" class="text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-lg bg-slate-700 hover:bg-slate-600 transition">Test Connection</button>
-              <p class="text-[10px] text-slate-500 ml-auto">Stored in your browser only.</p>
+            <div class="md:col-span-2 flex flex-wrap items-center gap-2">
+              <button id="btn-save-settings" class="text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-lg bg-slate-700 hover:bg-slate-600 transition flex-1 sm:flex-initial">Save Settings</button>
+              <button id="btn-test-connection" class="text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-lg bg-slate-700 hover:bg-slate-600 transition flex-1 sm:flex-initial">Test Connection</button>
+              <p class="text-[10px] text-slate-500 sm:ml-auto w-full sm:w-auto text-center sm:text-right">Stored in your browser only.</p>
             </div>
           </div>
         </details>
 
         <!-- Site Settings -->
-        <div class="bg-surface border border-slate-700/50 rounded-2xl p-5">
-          <h2 class="text-sm font-extrabold uppercase tracking-widest text-slate-300 mb-4">Site Settings</h2>
-          <div class="flex items-center justify-between gap-4">
-            <div class="flex-1">
+        <div class="bg-surface border border-slate-700/50 rounded-2xl p-4 sm:p-5">
+          <h2 class="text-sm font-extrabold uppercase tracking-widest text-slate-300 mb-3 sm:mb-4">Site Settings</h2>
+          <div class="flex items-center justify-between gap-3 sm:gap-4">
+            <div class="flex-1 min-w-0">
               <div class="text-sm font-bold text-slate-100">Ads on home page</div>
               <p class="text-[11px] text-slate-500 mt-0.5">Toggles all ad slots (gutter skyscrapers + bottom banner). Click Publish to apply.</p>
             </div>
@@ -135,11 +138,12 @@
         </div>
 
         <!-- Match Editor -->
-        <div class="flex items-center justify-between">
+        <div class="flex items-center justify-between gap-3">
           <h2 class="text-sm font-extrabold uppercase tracking-widest text-slate-300">Matches</h2>
-          <button id="btn-add" class="text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-xl bg-accent text-slate-900 hover:bg-accent/90 transition flex items-center gap-1.5">
+          <button id="btn-add" class="text-xs font-bold uppercase tracking-wider px-3 sm:px-4 py-2 rounded-xl bg-accent text-slate-900 hover:bg-accent/90 transition flex items-center gap-1.5 flex-shrink-0">
             <span class="material-symbols-outlined text-base">add</span>
-            Add Match
+            <span class="hidden sm:inline">Add Match</span>
+            <span class="sm:hidden">Add</span>
           </button>
         </div>
 
@@ -161,7 +165,7 @@
 
     <!-- Match Row Template -->
     <template id="match-template">
-      <div class="bg-surface border border-slate-700/50 rounded-2xl p-4" data-match-row>
+      <div class="bg-surface border border-slate-700/50 rounded-2xl p-3 sm:p-4" data-match-row>
         <div class="flex items-center justify-between mb-3">
           <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Match <span data-field="id-display"></span></span>
           <button data-action="delete" class="text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded bg-red-500/10 hover:bg-red-500/20 text-red-400 transition flex items-center gap-1">
