@@ -140,8 +140,8 @@ nav a { justify-content: center; }
 
 .dark .team-logo-img {
   background-color: #f8fafc;
-  border-radius: 9999px;
-  padding: 3px;
+  border-radius: 6px;
+  padding: 2px;
   box-sizing: border-box;
 }
 
