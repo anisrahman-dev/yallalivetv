@@ -84,7 +84,6 @@ const MATCHES_DATA = [
       logo: "logos/tunisia.svg"
     }
   },
-  // Yesterday's matches (for dynamic demo)
   {
     id: 6,
     league: "UEFA Champions League",
@@ -102,7 +101,6 @@ const MATCHES_DATA = [
       logo: "logos/egypt.svg"
     }
   },
-  // Tomorrow's matches (for dynamic demo)
   {
     id: 7,
     league: "Spain, La Liga",
@@ -118,6 +116,40 @@ const MATCHES_DATA = [
     awayTeam: {
       name: "Tunisia under 17",
       logo: "logos/tunisia.svg"
+    }
+  },
+  {
+    id: 8,
+    league: "dfgsfgs",
+    time: "",
+    status: "fdsfsdfds",
+    day: "today",
+    isImportant: true,
+    link: "https://t.me",
+    homeTeam: {
+      name: "fdsfsd",
+      logo: "logos/bournemouth.svg"
+    },
+    awayTeam: {
+      name: "dsfsdfsdfsf",
+      logo: "logos/cameroon.svg"
+    }
+  },
+  {
+    id: 9,
+    league: "fdfdfdf",
+    time: "7.00pm",
+    status: "efrer",
+    day: "today",
+    isImportant: false,
+    link: "https://t.me",
+    homeTeam: {
+      name: "erer",
+      logo: "logos/bournemouth.svg"
+    },
+    awayTeam: {
+      name: "erer",
+      logo: "logos/cameroon.svg"
     }
   }
 ];
