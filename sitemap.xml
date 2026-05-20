@@ -7,21 +7,9 @@
     <priority>1.00</priority>
   </url>
   <url>
-    <loc>https://voltstream.com/index.html</loc>
+    <loc>https://voltstream.com/home.html</loc>
     <lastmod>2026-05-19</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.00</priority>
-  </url>
-  <url>
-    <loc>https://voltstream.com/blog</loc>
-    <lastmod>2026-05-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://voltstream.com/blog/world-cup-2026-kickoff-date.html</loc>
-    <lastmod>2026-05-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.80</priority>
   </url>
 </urlset>

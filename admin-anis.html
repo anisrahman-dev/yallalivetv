@@ -1,0 +1,912 @@
+<!doctype html>
+<html class="dark" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="googlebot" content="noindex, nofollow" />
+    <title>Admin – Yalla Live</title>
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              background: '#0f172a',
+              surface: '#1e293b',
+              primary: '#ee335f',
+              accent: '#fac912'
+            },
+            fontFamily: { sora: ['Sora', 'sans-serif'] }
+          }
+        }
+      };
+    </script>
+    <style>
+      body { font-family: 'Sora', sans-serif; }
+      .field-label { @apply block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1; }
+      input, select, textarea { font-family: 'Sora', sans-serif; }
+      .toast { transition: opacity .25s ease, transform .25s ease; }
+    </style>
+  </head>
+  <body class="bg-background text-slate-100 min-h-screen">
+    <!-- ════════════════════ AUTH GATE ════════════════════ -->
+    <section id="auth-gate" class="min-h-screen flex items-center justify-center px-4">
+      <div class="w-full max-w-sm bg-surface border border-slate-700/50 rounded-2xl shadow-2xl p-8">
+        <div class="flex items-center justify-center mb-6">
+          <img src="logos/logo-unified.png" alt="Yalla Live" class="h-12 w-auto object-contain" />
+        </div>
+        <h1 class="text-xl font-extrabold text-center mb-1">Admin Console</h1>
+        <p class="text-xs text-slate-400 text-center mb-6">Enter password to continue</p>
+        <form id="auth-form" class="space-y-4">
+          <input
+            id="auth-password"
+            type="password"
+            autocomplete="current-password"
+            placeholder="Password"
+            class="w-full bg-slate-900/80 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+            required
+          />
+          <button type="submit" class="w-full bg-primary hover:bg-primary/90 active:scale-[0.98] text-white font-bold rounded-xl py-3 text-sm uppercase tracking-wider transition-all">
+            Sign In
+          </button>
+          <p id="auth-error" class="text-[11px] text-red-400 text-center hidden">Wrong password</p>
+        </form>
+      </div>
+    </section>
+
+    <!-- ════════════════════ ADMIN UI ════════════════════ -->
+    <section id="admin-ui" class="hidden">
+      <!-- Header -->
+      <header class="sticky top-0 z-40 bg-surface/95 backdrop-blur border-b border-slate-700/50">
+        <div class="max-w-[1100px] mx-auto px-4 py-3 flex items-center justify-between gap-3 flex-wrap">
+          <div class="flex items-center gap-2">
+            <img src="logos/logo-unified.png" alt="" class="h-9 w-auto" />
+            <span class="text-xs font-extrabold uppercase tracking-widest text-primary">Admin</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span id="dirty-indicator" class="hidden text-[10px] font-bold uppercase tracking-wider text-accent">● Unsaved</span>
+            <button id="btn-reload" class="text-xs font-bold uppercase tracking-wider px-3 py-2 rounded-xl bg-slate-700/60 hover:bg-slate-700 transition">Reload from GitHub</button>
+            <button id="btn-publish" class="text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-xl bg-primary hover:bg-primary/90 transition flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-base">cloud_upload</span>
+              Publish
+            </button>
+            <button id="btn-logout" class="text-xs font-bold uppercase tracking-wider px-3 py-2 rounded-xl bg-slate-700/40 hover:bg-slate-700 transition" title="Sign out">
+              <span class="material-symbols-outlined text-base align-middle">logout</span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <main class="max-w-[1100px] mx-auto px-4 py-6 space-y-6">
+        <!-- GitHub Settings Panel -->
+        <details class="bg-surface border border-slate-700/50 rounded-2xl overflow-hidden">
+          <summary class="cursor-pointer select-none px-5 py-3 text-xs font-bold uppercase tracking-wider text-slate-300 hover:text-white flex items-center justify-between">
+            <span class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-base">settings</span>
+              GitHub Connection
+            </span>
+            <span id="conn-status" class="text-[10px] text-slate-500"></span>
+          </summary>
+          <div class="px-5 pb-5 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Owner</label>
+              <input id="gh-owner" type="text" class="w-full bg-slate-900/80 border border-slate-700 rounded-lg px-3 py-2 text-sm" />
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Repo</label>
+              <input id="gh-repo" type="text" class="w-full bg-slate-900/80 border border-slate-700 rounded-lg px-3 py-2 text-sm" />
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Branch</label>
+              <input id="gh-branch" type="text" class="w-full bg-slate-900/80 border border-slate-700 rounded-lg px-3 py-2 text-sm" />
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">
+                Personal Access Token <span class="text-slate-500 normal-case font-normal">(needs <code>repo</code> or <code>contents:write</code> scope)</span>
+              </label>
+              <input id="gh-token" type="password" autocomplete="off" class="w-full bg-slate-900/80 border border-slate-700 rounded-lg px-3 py-2 text-sm" placeholder="ghp_…" />
+            </div>
+            <div class="md:col-span-2 flex items-center gap-2">
+              <button id="btn-save-settings" class="text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-lg bg-slate-700 hover:bg-slate-600 transition">Save Settings</button>
+              <button id="btn-test-connection" class="text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-lg bg-slate-700 hover:bg-slate-600 transition">Test Connection</button>
+              <p class="text-[10px] text-slate-500 ml-auto">Stored in your browser only.</p>
+            </div>
+          </div>
+        </details>
+
+        <!-- Match Editor -->
+        <div class="flex items-center justify-between">
+          <h2 class="text-sm font-extrabold uppercase tracking-widest text-slate-300">Matches</h2>
+          <button id="btn-add" class="text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-xl bg-accent text-slate-900 hover:bg-accent/90 transition flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-base">add</span>
+            Add Match
+          </button>
+        </div>
+
+        <div id="match-list" class="space-y-3"></div>
+
+        <p class="text-[11px] text-slate-500 text-center py-4">
+          Changes here are saved to your browser as you type. Click <strong class="text-slate-300">Publish</strong> to commit <code>matches.js</code> to GitHub — your hosting will redeploy automatically.
+        </p>
+      </main>
+    </section>
+
+    <!-- Toast -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 hidden toast opacity-0 translate-y-2">
+      <div class="bg-slate-800 border border-slate-700 rounded-xl shadow-2xl px-5 py-3 text-sm font-bold flex items-center gap-2">
+        <span id="toast-icon" class="material-symbols-outlined">check_circle</span>
+        <span id="toast-text">OK</span>
+      </div>
+    </div>
+
+    <!-- Match Row Template -->
+    <template id="match-template">
+      <div class="bg-surface border border-slate-700/50 rounded-2xl p-4" data-match-row>
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Match <span data-field="id-display"></span></span>
+          <button data-action="delete" class="text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded bg-red-500/10 hover:bg-red-500/20 text-red-400 transition flex items-center gap-1">
+            <span class="material-symbols-outlined text-sm">delete</span>
+            Remove
+          </button>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-3">
+          <div class="md:col-span-2">
+            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">ID</label>
+            <input data-field="id" type="number" class="w-full bg-slate-900/80 border border-slate-700 rounded-lg px-3 py-2 text-sm" />
+          </div>
+          <div class="md:col-span-6">
+            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">League</label>
+            <input data-field="league" type="text" list="leagues-list" autocomplete="off" class="w-full bg-slate-900/80 border border-slate-700 rounded-lg px-3 py-2 text-sm" />
+          </div>
+          <div class="md:col-span-2">
+            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Time</label>
+            <input data-field="time" type="text" list="times-list" autocomplete="off" class="w-full bg-slate-900/80 border border-slate-700 rounded-lg px-3 py-2 text-sm" placeholder="7:00 PM" />
+          </div>
+          <div class="md:col-span-2">
+            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Day</label>
+            <select data-field="day" class="w-full bg-slate-900/80 border border-slate-700 rounded-lg px-3 py-2 text-sm">
+              <option value="yesterday">yesterday</option>
+              <option value="today">today</option>
+              <option value="tomorrow">tomorrow</option>
+            </select>
+          </div>
+          <div class="md:col-span-8">
+            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Status</label>
+            <input data-field="status" type="text" class="w-full bg-slate-900/80 border border-slate-700 rounded-lg px-3 py-2 text-sm" placeholder="It hasn't started yet." />
+          </div>
+          <div class="md:col-span-4 flex items-center gap-3 pt-5">
+            <label class="inline-flex items-center gap-2 text-sm">
+              <input data-field="isImportant" type="checkbox" class="rounded border-slate-700 bg-slate-900/80 text-primary focus:ring-primary" />
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-300">Featured</span>
+            </label>
+          </div>
+          <div class="md:col-span-12">
+            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Stream Link</label>
+            <input data-field="link" type="url" class="w-full bg-slate-900/80 border border-slate-700 rounded-lg px-3 py-2 text-sm" placeholder="https://t.me" />
+          </div>
+          <div class="md:col-span-6">
+            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Home Team Name</label>
+            <input data-field="homeName" type="text" autocomplete="off" class="w-full bg-slate-900/80 border border-slate-700 rounded-lg px-3 py-2 text-sm" />
+          </div>
+          <div class="md:col-span-6">
+            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Home Team Logo</label>
+            <select data-field="homeLogo" class="w-full bg-slate-900/80 border border-slate-700 rounded-lg px-3 py-2 text-sm"></select>
+          </div>
+          <div class="md:col-span-6">
+            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Away Team Name</label>
+            <input data-field="awayName" type="text" autocomplete="off" class="w-full bg-slate-900/80 border border-slate-700 rounded-lg px-3 py-2 text-sm" />
+          </div>
+          <div class="md:col-span-6">
+            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Away Team Logo</label>
+            <select data-field="awayLogo" class="w-full bg-slate-900/80 border border-slate-700 rounded-lg px-3 py-2 text-sm"></select>
+          </div>
+          <datalist data-field="teams-list"></datalist>
+        </div>
+      </div>
+    </template>
+
+    <!-- Global datalists for league + time pickers -->
+    <datalist id="leagues-list"></datalist>
+    <datalist id="times-list"></datalist>
+
+    <script>
+      /* ════════════════════════════════════════════════════════════════
+       * Yalla Live Admin Console
+       * NOTE: Client-side password gate is obscurity, not security.
+       *       Anyone reading the page source can find the SHA-256 hash
+       *       below and the GitHub PAT, if you've stored one, is in
+       *       this browser's localStorage. Do not share this URL.
+       * ════════════════════════════════════════════════════════════════ */
+
+      // SHA-256("anis12345anis")
+      const PASSWORD_HASH = '890402d71a925bd877402ecdfce149925b522b0177dad8a51221b7dbd3e6bc0e';
+      const STORAGE = {
+        auth: 'yalla.admin.auth',
+        gh: 'yalla.admin.gh',
+        draft: 'yalla.admin.draft'
+      };
+      const DEFAULTS = {
+        owner: 'anisrahman-dev',
+        repo: 'yallalive',
+        branch: 'main',
+        token: ''
+      };
+      const LOGOS = [
+        // Legacy SVG logos (used in older match entries)
+        'logos/bournemouth.svg', 'logos/cameroon.svg', 'logos/chelsea.svg', 'logos/dr-congo.svg',
+        'logos/egypt.svg', 'logos/ethiopia.svg', 'logos/man-city.svg', 'logos/morocco.svg',
+        'logos/tottenham.svg', 'logos/tunisia.svg',
+        // National flags — 48 World Cup 2026 nations
+        'logos/usa.png', 'logos/canada.png', 'logos/mexico.png',
+        'logos/spain.png', 'logos/france.png', 'logos/england.png', 'logos/germany.png',
+        'logos/italy.png', 'logos/portugal.png', 'logos/netherlands.png', 'logos/belgium.png',
+        'logos/croatia.png', 'logos/switzerland.png', 'logos/denmark.png', 'logos/poland.png',
+        'logos/austria.png', 'logos/czech-republic.png', 'logos/turkey.png', 'logos/serbia.png',
+        'logos/argentina.png', 'logos/brazil.png', 'logos/uruguay.png', 'logos/colombia.png',
+        'logos/ecuador.png', 'logos/paraguay.png',
+        'logos/morocco.png', 'logos/senegal.png', 'logos/tunisia.png', 'logos/algeria.png',
+        'logos/egypt.png', 'logos/cameroon.png', 'logos/nigeria.png', 'logos/ivory-coast.png', 'logos/ghana.png',
+        'logos/japan.png', 'logos/south-korea.png', 'logos/iran.png', 'logos/saudi-arabia.png',
+        'logos/australia.png', 'logos/iraq.png', 'logos/uae.png', 'logos/qatar.png',
+        'logos/costa-rica.png', 'logos/panama.png', 'logos/jamaica.png',
+        'logos/new-zealand.png', 'logos/bolivia.png', 'logos/dr-congo.png',
+        // Premier League clubs
+        'logos/arsenal.png', 'logos/aston-villa.png', 'logos/bournemouth.png', 'logos/brentford.png',
+        'logos/brighton.png', 'logos/burnley.png', 'logos/chelsea.png', 'logos/crystal-palace.png',
+        'logos/everton.png', 'logos/fulham.png', 'logos/leeds.png', 'logos/liverpool.png',
+        'logos/man-city.png', 'logos/man-united.png', 'logos/newcastle.png', 'logos/nottingham-forest.png',
+        'logos/sunderland.png', 'logos/tottenham.png', 'logos/west-ham.png', 'logos/wolves.png',
+        // La Liga
+        'logos/alaves.png', 'logos/athletic-bilbao.png', 'logos/atletico-madrid.png', 'logos/barcelona.png',
+        'logos/celta-vigo.png', 'logos/elche.png', 'logos/espanyol.png', 'logos/getafe.png',
+        'logos/girona.png', 'logos/levante.png', 'logos/mallorca.png', 'logos/osasuna.png',
+        'logos/rayo-vallecano.png', 'logos/real-betis.png', 'logos/real-madrid.png', 'logos/real-oviedo.png',
+        'logos/real-sociedad.png', 'logos/sevilla.png', 'logos/valencia.png', 'logos/villarreal.png',
+        // Serie A
+        'logos/atalanta.png', 'logos/bologna.png', 'logos/cagliari.png', 'logos/como.png',
+        'logos/cremonese.png', 'logos/fiorentina.png', 'logos/genoa.png', 'logos/hellas-verona.png',
+        'logos/inter-milan.png', 'logos/juventus.png', 'logos/lazio.png', 'logos/lecce.png',
+        'logos/milan.png', 'logos/napoli.png', 'logos/parma.png', 'logos/pisa.png',
+        'logos/roma.png', 'logos/sassuolo.png', 'logos/torino.png', 'logos/udinese.png',
+        // Bundesliga
+        'logos/augsburg.png', 'logos/bayer-leverkusen.png', 'logos/bayern-munich.png', 'logos/dortmund.png',
+        'logos/monchengladbach.png', 'logos/eintracht-frankfurt.png', 'logos/koln.png', 'logos/freiburg.png',
+        'logos/hamburger-sv.png', 'logos/heidenheim.png', 'logos/hoffenheim.png', 'logos/mainz.png',
+        'logos/rb-leipzig.png', 'logos/st-pauli.png', 'logos/stuttgart.png', 'logos/union-berlin.png',
+        'logos/werder-bremen.png', 'logos/wolfsburg.png',
+        // Ligue 1
+        'logos/angers.png', 'logos/auxerre.png', 'logos/brest.png', 'logos/le-havre.png',
+        'logos/lens.png', 'logos/lille.png', 'logos/lorient.png', 'logos/lyon.png',
+        'logos/marseille.png', 'logos/metz.png', 'logos/monaco.png', 'logos/nantes.png',
+        'logos/nice.png', 'logos/paris-fc.png', 'logos/psg.png', 'logos/rennes.png',
+        'logos/strasbourg.png', 'logos/toulouse.png'
+      ];
+
+      /* ── League / team / time presets ──────────────────────────────
+       * League → array of teams. Empty array = no filter, accept anything.
+       * For continental club competitions the suggestion list = top-5 club
+       * teams (combobox so admins can still type anything).
+       * ───────────────────────────────────────────────────────────── */
+      const PL_TEAMS = [
+        'Arsenal', 'Aston Villa', 'Bournemouth', 'Brentford', 'Brighton & Hove Albion',
+        'Burnley', 'Chelsea', 'Crystal Palace', 'Everton', 'Fulham',
+        'Leeds United', 'Liverpool', 'Manchester City', 'Manchester United', 'Newcastle United',
+        'Nottingham Forest', 'Sunderland', 'Tottenham Hotspur', 'West Ham United', 'Wolverhampton Wanderers'
+      ];
+      const LALIGA_TEAMS = [
+        'Alavés', 'Athletic Bilbao', 'Atlético Madrid', 'Barcelona', 'Celta Vigo',
+        'Elche', 'Espanyol', 'Getafe', 'Girona', 'Levante',
+        'Mallorca', 'Osasuna', 'Rayo Vallecano', 'Real Betis', 'Real Madrid',
+        'Real Oviedo', 'Real Sociedad', 'Sevilla', 'Valencia', 'Villarreal'
+      ];
+      const SERIEA_TEAMS = [
+        'Atalanta', 'Bologna', 'Cagliari', 'Como', 'Cremonese',
+        'Fiorentina', 'Genoa', 'Hellas Verona', 'Inter Milan', 'Juventus',
+        'Lazio', 'Lecce', 'Milan', 'Napoli', 'Parma',
+        'Pisa', 'Roma', 'Sassuolo', 'Torino', 'Udinese'
+      ];
+      const BUNDESLIGA_TEAMS = [
+        'Augsburg', 'Bayer Leverkusen', 'Bayern Munich', 'Borussia Dortmund', 'Borussia Mönchengladbach',
+        'Eintracht Frankfurt', 'FC Köln', 'Freiburg', 'Hamburger SV', 'Heidenheim',
+        'Hoffenheim', 'Mainz 05', 'RB Leipzig', 'St. Pauli', 'Stuttgart',
+        'Union Berlin', 'Werder Bremen', 'Wolfsburg'
+      ];
+      const LIGUE1_TEAMS = [
+        'Angers', 'Auxerre', 'Brest', 'Le Havre', 'Lens',
+        'Lille', 'Lorient', 'Lyon', 'Marseille', 'Metz',
+        'Monaco', 'Nantes', 'Nice', 'Paris FC', 'Paris Saint-Germain',
+        'Rennes', 'Strasbourg', 'Toulouse'
+      ];
+      const WORLD_CUP_2026_TEAMS = [
+        // Hosts (3)
+        'USA', 'Canada', 'Mexico',
+        // UEFA (16)
+        'Spain', 'France', 'England', 'Germany', 'Italy', 'Portugal', 'Netherlands', 'Belgium',
+        'Croatia', 'Switzerland', 'Denmark', 'Poland', 'Austria', 'Czech Republic', 'Turkey', 'Serbia',
+        // CONMEBOL (6)
+        'Argentina', 'Brazil', 'Uruguay', 'Colombia', 'Ecuador', 'Paraguay',
+        // CAF (9)
+        'Morocco', 'Senegal', 'Tunisia', 'Algeria', 'Egypt', 'Cameroon', 'Nigeria', 'Ivory Coast', 'Ghana',
+        // AFC (8)
+        'Japan', 'South Korea', 'Iran', 'Saudi Arabia', 'Australia', 'Iraq', 'United Arab Emirates', 'Qatar',
+        // CONCACAF (3, beyond hosts)
+        'Costa Rica', 'Panama', 'Jamaica',
+        // OFC (1)
+        'New Zealand',
+        // Inter-confederation playoff slots (2)
+        'Bolivia', 'DR Congo'
+      ];
+      const TOP5_CLUBS = [...PL_TEAMS, ...LALIGA_TEAMS, ...SERIEA_TEAMS, ...BUNDESLIGA_TEAMS, ...LIGUE1_TEAMS];
+
+      const LEAGUES = {
+        'England, English Premier League': PL_TEAMS,
+        'Spain, La Liga': LALIGA_TEAMS,
+        'Italy, Serie A': SERIEA_TEAMS,
+        'Germany, Bundesliga': BUNDESLIGA_TEAMS,
+        'France, Ligue 1': LIGUE1_TEAMS,
+        'FIFA World Cup 2026': WORLD_CUP_2026_TEAMS,
+        'FIFA World Cup 2026 Qualifying': WORLD_CUP_2026_TEAMS,
+        'UEFA Champions League': TOP5_CLUBS,
+        'UEFA Europa League': TOP5_CLUBS,
+        'UEFA Conference League': TOP5_CLUBS,
+        'UEFA Nations League': WORLD_CUP_2026_TEAMS,
+        'Copa America': WORLD_CUP_2026_TEAMS,
+        'AFC Asian Cup': WORLD_CUP_2026_TEAMS,
+        'Africa Cup of Nations': WORLD_CUP_2026_TEAMS,
+        'FA Cup': PL_TEAMS,
+        'Copa del Rey': LALIGA_TEAMS,
+        'Coppa Italia': SERIEA_TEAMS,
+        'DFB-Pokal': BUNDESLIGA_TEAMS,
+        'Coupe de France': LIGUE1_TEAMS,
+        'Saudi Pro League': [],
+        'Major League Soccer': [],
+        'Eredivisie': [],
+        'Primeira Liga': [],
+        'Club Friendly': TOP5_CLUBS,
+        'International Friendly': WORLD_CUP_2026_TEAMS
+      };
+
+      // Auto-suggest a logo when a known team name is picked.
+      const TEAM_LOGOS = {
+        // World Cup 2026 nations → flag PNGs
+        'USA': 'logos/usa.png', 'Canada': 'logos/canada.png', 'Mexico': 'logos/mexico.png',
+        'Spain': 'logos/spain.png', 'France': 'logos/france.png', 'England': 'logos/england.png',
+        'Germany': 'logos/germany.png', 'Italy': 'logos/italy.png', 'Portugal': 'logos/portugal.png',
+        'Netherlands': 'logos/netherlands.png', 'Belgium': 'logos/belgium.png', 'Croatia': 'logos/croatia.png',
+        'Switzerland': 'logos/switzerland.png', 'Denmark': 'logos/denmark.png', 'Poland': 'logos/poland.png',
+        'Austria': 'logos/austria.png', 'Czech Republic': 'logos/czech-republic.png', 'Turkey': 'logos/turkey.png',
+        'Serbia': 'logos/serbia.png', 'Argentina': 'logos/argentina.png', 'Brazil': 'logos/brazil.png',
+        'Uruguay': 'logos/uruguay.png', 'Colombia': 'logos/colombia.png', 'Ecuador': 'logos/ecuador.png',
+        'Paraguay': 'logos/paraguay.png', 'Morocco': 'logos/morocco.png', 'Senegal': 'logos/senegal.png',
+        'Tunisia': 'logos/tunisia.png', 'Algeria': 'logos/algeria.png', 'Egypt': 'logos/egypt.png',
+        'Cameroon': 'logos/cameroon.png', 'Nigeria': 'logos/nigeria.png', 'Ivory Coast': 'logos/ivory-coast.png',
+        'Ghana': 'logos/ghana.png', 'Japan': 'logos/japan.png', 'South Korea': 'logos/south-korea.png',
+        'Iran': 'logos/iran.png', 'Saudi Arabia': 'logos/saudi-arabia.png', 'Australia': 'logos/australia.png',
+        'Iraq': 'logos/iraq.png', 'United Arab Emirates': 'logos/uae.png', 'Qatar': 'logos/qatar.png',
+        'Costa Rica': 'logos/costa-rica.png', 'Panama': 'logos/panama.png', 'Jamaica': 'logos/jamaica.png',
+        'New Zealand': 'logos/new-zealand.png', 'Bolivia': 'logos/bolivia.png', 'DR Congo': 'logos/dr-congo.png',
+
+        // Premier League
+        'Arsenal': 'logos/arsenal.png', 'Aston Villa': 'logos/aston-villa.png',
+        'Bournemouth': 'logos/bournemouth.png', 'Brentford': 'logos/brentford.png',
+        'Brighton & Hove Albion': 'logos/brighton.png', 'Burnley': 'logos/burnley.png',
+        'Chelsea': 'logos/chelsea.png', 'Crystal Palace': 'logos/crystal-palace.png',
+        'Everton': 'logos/everton.png', 'Fulham': 'logos/fulham.png',
+        'Leeds United': 'logos/leeds.png', 'Liverpool': 'logos/liverpool.png',
+        'Manchester City': 'logos/man-city.png', 'Manchester United': 'logos/man-united.png',
+        'Newcastle United': 'logos/newcastle.png', 'Nottingham Forest': 'logos/nottingham-forest.png',
+        'Sunderland': 'logos/sunderland.png', 'Tottenham Hotspur': 'logos/tottenham.png',
+        'West Ham United': 'logos/west-ham.png', 'Wolverhampton Wanderers': 'logos/wolves.png',
+
+        // La Liga
+        'Alavés': 'logos/alaves.png', 'Athletic Bilbao': 'logos/athletic-bilbao.png',
+        'Atlético Madrid': 'logos/atletico-madrid.png', 'Barcelona': 'logos/barcelona.png',
+        'Celta Vigo': 'logos/celta-vigo.png', 'Elche': 'logos/elche.png',
+        'Espanyol': 'logos/espanyol.png', 'Getafe': 'logos/getafe.png',
+        'Girona': 'logos/girona.png', 'Levante': 'logos/levante.png',
+        'Mallorca': 'logos/mallorca.png', 'Osasuna': 'logos/osasuna.png',
+        'Rayo Vallecano': 'logos/rayo-vallecano.png', 'Real Betis': 'logos/real-betis.png',
+        'Real Madrid': 'logos/real-madrid.png', 'Real Oviedo': 'logos/real-oviedo.png',
+        'Real Sociedad': 'logos/real-sociedad.png', 'Sevilla': 'logos/sevilla.png',
+        'Valencia': 'logos/valencia.png', 'Villarreal': 'logos/villarreal.png',
+
+        // Serie A
+        'Atalanta': 'logos/atalanta.png', 'Bologna': 'logos/bologna.png',
+        'Cagliari': 'logos/cagliari.png', 'Como': 'logos/como.png',
+        'Cremonese': 'logos/cremonese.png', 'Fiorentina': 'logos/fiorentina.png',
+        'Genoa': 'logos/genoa.png', 'Hellas Verona': 'logos/hellas-verona.png',
+        'Inter Milan': 'logos/inter-milan.png', 'Juventus': 'logos/juventus.png',
+        'Lazio': 'logos/lazio.png', 'Lecce': 'logos/lecce.png',
+        'Milan': 'logos/milan.png', 'Napoli': 'logos/napoli.png',
+        'Parma': 'logos/parma.png', 'Pisa': 'logos/pisa.png',
+        'Roma': 'logos/roma.png', 'Sassuolo': 'logos/sassuolo.png',
+        'Torino': 'logos/torino.png', 'Udinese': 'logos/udinese.png',
+
+        // Bundesliga
+        'Augsburg': 'logos/augsburg.png', 'Bayer Leverkusen': 'logos/bayer-leverkusen.png',
+        'Bayern Munich': 'logos/bayern-munich.png', 'Borussia Dortmund': 'logos/dortmund.png',
+        'Borussia Mönchengladbach': 'logos/monchengladbach.png', 'Eintracht Frankfurt': 'logos/eintracht-frankfurt.png',
+        'FC Köln': 'logos/koln.png', 'Freiburg': 'logos/freiburg.png',
+        'Hamburger SV': 'logos/hamburger-sv.png', 'Heidenheim': 'logos/heidenheim.png',
+        'Hoffenheim': 'logos/hoffenheim.png', 'Mainz 05': 'logos/mainz.png',
+        'RB Leipzig': 'logos/rb-leipzig.png', 'St. Pauli': 'logos/st-pauli.png',
+        'Stuttgart': 'logos/stuttgart.png', 'Union Berlin': 'logos/union-berlin.png',
+        'Werder Bremen': 'logos/werder-bremen.png', 'Wolfsburg': 'logos/wolfsburg.png',
+
+        // Ligue 1
+        'Angers': 'logos/angers.png', 'Auxerre': 'logos/auxerre.png',
+        'Brest': 'logos/brest.png', 'Le Havre': 'logos/le-havre.png',
+        'Lens': 'logos/lens.png', 'Lille': 'logos/lille.png',
+        'Lorient': 'logos/lorient.png', 'Lyon': 'logos/lyon.png',
+        'Marseille': 'logos/marseille.png', 'Metz': 'logos/metz.png',
+        'Monaco': 'logos/monaco.png', 'Nantes': 'logos/nantes.png',
+        'Nice': 'logos/nice.png', 'Paris FC': 'logos/paris-fc.png',
+        'Paris Saint-Germain': 'logos/psg.png', 'Rennes': 'logos/rennes.png',
+        'Strasbourg': 'logos/strasbourg.png', 'Toulouse': 'logos/toulouse.png',
+
+        // Legacy aliases — keep existing match entries rendering correctly
+        'Democratic Republic of Congo': 'logos/dr-congo.png',
+        'Cameroon Under 17': 'logos/cameroon.png',
+        'Egypt under 17': 'logos/egypt.png',
+        'Ethiopia': 'logos/ethiopia.svg',
+        'Ethiopia under 17': 'logos/ethiopia.svg',
+        'Morocco under 17': 'logos/morocco.png',
+        'Tunisia under 17': 'logos/tunisia.png'
+      };
+
+      const TIME_SLOTS = (() => {
+        const out = [];
+        for (let h = 0; h < 24; h++) {
+          for (let m = 0; m < 60; m += 15) {
+            const period = h < 12 ? 'AM' : 'PM';
+            const hour12 = h % 12 === 0 ? 12 : h % 12;
+            out.push(`${hour12}:${m.toString().padStart(2, '0')} ${period}`);
+          }
+        }
+        return out;
+      })();
+
+      let matches = [];
+      let baseSha = null;
+      let dirty = false;
+
+      const $ = (sel) => document.querySelector(sel);
+      const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+
+      /* ── Toast ──────────────────────────────────────────────────── */
+      function toast(message, kind = 'ok') {
+        const el = $('#toast');
+        const icon = $('#toast-icon');
+        const txt = $('#toast-text');
+        icon.textContent = kind === 'ok' ? 'check_circle' : kind === 'warn' ? 'warning' : 'error';
+        icon.className = 'material-symbols-outlined ' + (kind === 'ok' ? 'text-emerald-400' : kind === 'warn' ? 'text-accent' : 'text-red-400');
+        txt.textContent = message;
+        el.classList.remove('hidden');
+        requestAnimationFrame(() => {
+          el.classList.remove('opacity-0', 'translate-y-2');
+        });
+        clearTimeout(toast._t);
+        toast._t = setTimeout(() => {
+          el.classList.add('opacity-0', 'translate-y-2');
+          setTimeout(() => el.classList.add('hidden'), 250);
+        }, 3000);
+      }
+
+      /* ── Auth ───────────────────────────────────────────────────── */
+      async function sha256(text) {
+        const buf = new TextEncoder().encode(text);
+        const hash = await crypto.subtle.digest('SHA-256', buf);
+        return Array.from(new Uint8Array(hash)).map((b) => b.toString(16).padStart(2, '0')).join('');
+      }
+
+      function showAdmin() {
+        $('#auth-gate').classList.add('hidden');
+        $('#admin-ui').classList.remove('hidden');
+        boot();
+      }
+
+      $('#auth-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const pw = $('#auth-password').value;
+        const hash = await sha256(pw);
+        if (hash === PASSWORD_HASH) {
+          sessionStorage.setItem(STORAGE.auth, '1');
+          $('#auth-error').classList.add('hidden');
+          showAdmin();
+        } else {
+          $('#auth-error').classList.remove('hidden');
+          $('#auth-password').value = '';
+        }
+      });
+
+      if (sessionStorage.getItem(STORAGE.auth) === '1') showAdmin();
+
+      $('#btn-logout').addEventListener('click', () => {
+        sessionStorage.removeItem(STORAGE.auth);
+        location.reload();
+      });
+
+      /* ── GitHub settings persistence ────────────────────────────── */
+      function loadSettings() {
+        const raw = localStorage.getItem(STORAGE.gh);
+        const saved = raw ? JSON.parse(raw) : {};
+        const cfg = { ...DEFAULTS, ...saved };
+        $('#gh-owner').value = cfg.owner;
+        $('#gh-repo').value = cfg.repo;
+        $('#gh-branch').value = cfg.branch;
+        $('#gh-token').value = cfg.token;
+        return cfg;
+      }
+      function readSettings() {
+        return {
+          owner: $('#gh-owner').value.trim(),
+          repo: $('#gh-repo').value.trim(),
+          branch: $('#gh-branch').value.trim() || 'main',
+          token: $('#gh-token').value.trim()
+        };
+      }
+      function saveSettings() {
+        const cfg = readSettings();
+        localStorage.setItem(STORAGE.gh, JSON.stringify(cfg));
+        toast('Settings saved');
+        return cfg;
+      }
+      $('#btn-save-settings').addEventListener('click', saveSettings);
+      $('#btn-test-connection').addEventListener('click', testConnection);
+
+      /* ── Dirty state ────────────────────────────────────────────── */
+      function setDirty(v) {
+        dirty = v;
+        $('#dirty-indicator').classList.toggle('hidden', !v);
+        if (v) localStorage.setItem(STORAGE.draft, JSON.stringify(matches));
+        else localStorage.removeItem(STORAGE.draft);
+      }
+      window.addEventListener('beforeunload', (e) => {
+        if (dirty) {
+          e.preventDefault();
+          e.returnValue = '';
+        }
+      });
+
+      /* ── Datalist helpers ───────────────────────────────────────── */
+      function fillDatalist(dl, items) {
+        dl.innerHTML = '';
+        items.forEach((v) => {
+          const opt = document.createElement('option');
+          opt.value = v;
+          dl.appendChild(opt);
+        });
+      }
+      function initGlobalDatalists() {
+        fillDatalist(document.getElementById('leagues-list'), Object.keys(LEAGUES));
+        fillDatalist(document.getElementById('times-list'), TIME_SLOTS);
+      }
+      function updateRowTeamsDatalist(node, league) {
+        const dl = node.querySelector('[data-field="teams-list"]');
+        const teams = LEAGUES[league] || [];
+        fillDatalist(dl, teams);
+      }
+
+      /* ── Match list rendering ───────────────────────────────────── */
+      function renderMatches() {
+        const list = $('#match-list');
+        list.innerHTML = '';
+        const tpl = $('#match-template');
+        matches.forEach((m, idx) => {
+          const node = tpl.content.firstElementChild.cloneNode(true);
+          node.querySelector('[data-field="id-display"]').textContent = m.id ?? idx + 1;
+          node.querySelector('[data-field="id"]').value = m.id ?? '';
+          node.querySelector('[data-field="league"]').value = m.league ?? '';
+          node.querySelector('[data-field="time"]').value = m.time ?? '';
+          node.querySelector('[data-field="day"]').value = m.day ?? 'today';
+          node.querySelector('[data-field="status"]').value = m.status ?? '';
+          node.querySelector('[data-field="isImportant"]').checked = !!m.isImportant;
+          node.querySelector('[data-field="link"]').value = m.link ?? '';
+          node.querySelector('[data-field="homeName"]').value = m.homeTeam?.name ?? '';
+          node.querySelector('[data-field="awayName"]').value = m.awayTeam?.name ?? '';
+
+          const homeSel = node.querySelector('[data-field="homeLogo"]');
+          const awaySel = node.querySelector('[data-field="awayLogo"]');
+          populateLogoSelect(homeSel, m.homeTeam?.logo);
+          populateLogoSelect(awaySel, m.awayTeam?.logo);
+
+          // Per-row teams datalist (filtered by league) — link home + away inputs to it.
+          const teamsId = `teams-${idx}-${Date.now().toString(36)}`;
+          const teamsDl = node.querySelector('[data-field="teams-list"]');
+          teamsDl.id = teamsId;
+          node.querySelector('[data-field="homeName"]').setAttribute('list', teamsId);
+          node.querySelector('[data-field="awayName"]').setAttribute('list', teamsId);
+          updateRowTeamsDatalist(node, m.league);
+
+          node.querySelectorAll('input, select').forEach((input) => {
+            input.addEventListener('input', () => syncRow(idx, node));
+            input.addEventListener('change', () => syncRow(idx, node));
+          });
+          node.querySelector('[data-action="delete"]').addEventListener('click', () => {
+            if (confirm('Delete this match?')) {
+              matches.splice(idx, 1);
+              setDirty(true);
+              renderMatches();
+            }
+          });
+
+          list.appendChild(node);
+        });
+      }
+
+      function populateLogoSelect(select, current) {
+        select.innerHTML = '';
+        const seen = new Set();
+        const all = [...LOGOS];
+        if (current && !LOGOS.includes(current)) all.unshift(current);
+        all.forEach((path) => {
+          if (seen.has(path)) return;
+          seen.add(path);
+          const opt = document.createElement('option');
+          opt.value = path;
+          opt.textContent = path.replace('logos/', '').replace('.svg', '');
+          if (path === current) opt.selected = true;
+          select.appendChild(opt);
+        });
+      }
+
+      function syncRow(idx, node) {
+        const m = matches[idx];
+        const prevLeague = m.league;
+        const prevHomeName = m.homeTeam?.name;
+        const prevAwayName = m.awayTeam?.name;
+
+        m.id = Number(node.querySelector('[data-field="id"]').value) || 0;
+        m.league = node.querySelector('[data-field="league"]').value;
+        m.time = node.querySelector('[data-field="time"]').value;
+        m.day = node.querySelector('[data-field="day"]').value;
+        m.status = node.querySelector('[data-field="status"]').value;
+        m.isImportant = node.querySelector('[data-field="isImportant"]').checked;
+        m.link = node.querySelector('[data-field="link"]').value;
+        m.homeTeam = {
+          name: node.querySelector('[data-field="homeName"]').value,
+          logo: node.querySelector('[data-field="homeLogo"]').value
+        };
+        m.awayTeam = {
+          name: node.querySelector('[data-field="awayName"]').value,
+          logo: node.querySelector('[data-field="awayLogo"]').value
+        };
+        node.querySelector('[data-field="id-display"]').textContent = m.id || idx + 1;
+
+        // League changed → repopulate team suggestion list.
+        if (m.league !== prevLeague) updateRowTeamsDatalist(node, m.league);
+
+        // Team name picked from suggestions and matches a known logo → auto-fill.
+        if (m.homeTeam.name !== prevHomeName && TEAM_LOGOS[m.homeTeam.name]) {
+          m.homeTeam.logo = TEAM_LOGOS[m.homeTeam.name];
+          populateLogoSelect(node.querySelector('[data-field="homeLogo"]'), m.homeTeam.logo);
+        }
+        if (m.awayTeam.name !== prevAwayName && TEAM_LOGOS[m.awayTeam.name]) {
+          m.awayTeam.logo = TEAM_LOGOS[m.awayTeam.name];
+          populateLogoSelect(node.querySelector('[data-field="awayLogo"]'), m.awayTeam.logo);
+        }
+
+        setDirty(true);
+      }
+
+      $('#btn-add').addEventListener('click', () => {
+        const nextId = matches.reduce((max, m) => Math.max(max, Number(m.id) || 0), 0) + 1;
+        matches.push({
+          id: nextId,
+          league: '',
+          time: '',
+          status: '',
+          day: 'today',
+          isImportant: false,
+          link: 'https://t.me',
+          homeTeam: { name: '', logo: LOGOS[0] },
+          awayTeam: { name: '', logo: LOGOS[1] }
+        });
+        setDirty(true);
+        renderMatches();
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+      });
+
+      /* ── GitHub API ─────────────────────────────────────────────── */
+      function ghHeaders(cfg) {
+        const headers = { Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' };
+        if (cfg.token) headers.Authorization = 'Bearer ' + cfg.token;
+        return headers;
+      }
+      function ghContentsUrl(cfg) {
+        return `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/matches.js`;
+      }
+
+      async function fetchMatchesFromGitHub() {
+        const cfg = readSettings();
+        if (!cfg.owner || !cfg.repo) throw new Error('Owner/repo required');
+        const url = `${ghContentsUrl(cfg)}?ref=${encodeURIComponent(cfg.branch)}`;
+        const res = await fetch(url, { headers: ghHeaders(cfg) });
+        if (!res.ok) throw new Error(`GitHub fetch failed: ${res.status} ${res.statusText}`);
+        const data = await res.json();
+        baseSha = data.sha;
+        const content = decodeURIComponent(escape(atob(data.content.replace(/\n/g, ''))));
+        return parseMatchesJs(content);
+      }
+
+      async function fetchLatestSha(cfg) {
+        const url = `${ghContentsUrl(cfg)}?ref=${encodeURIComponent(cfg.branch)}`;
+        const res = await fetch(url, { headers: ghHeaders(cfg), cache: 'no-store' });
+        if (!res.ok) throw new Error(`Could not read current SHA: ${res.status} ${res.statusText}`);
+        const data = await res.json();
+        return data.sha;
+      }
+
+      async function publishToGitHub() {
+        const cfg = saveSettings();
+        if (!cfg.token) {
+          toast('Add a GitHub token first', 'warn');
+          return;
+        }
+        if (!validateMatches()) return;
+
+        $('#btn-publish').disabled = true;
+        $('#btn-publish').classList.add('opacity-60');
+        try {
+          // Always grab the latest SHA right before writing, so we never
+          // collide with changes made outside this admin session.
+          baseSha = await fetchLatestSha(cfg);
+
+          const content = serializeMatchesJs(matches);
+          const body = {
+            message: `chore(matches): admin update (${matches.length} matches)`,
+            content: btoa(unescape(encodeURIComponent(content))),
+            branch: cfg.branch,
+            sha: baseSha
+          };
+          const res = await fetch(ghContentsUrl(cfg), {
+            method: 'PUT',
+            headers: { ...ghHeaders(cfg), 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+          });
+          if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err.message || `${res.status} ${res.statusText}`);
+          }
+          const data = await res.json();
+          baseSha = data.content.sha;
+          setDirty(false);
+          toast('Published to GitHub');
+        } catch (e) {
+          console.error(e);
+          toast('Publish failed: ' + e.message, 'err');
+        } finally {
+          $('#btn-publish').disabled = false;
+          $('#btn-publish').classList.remove('opacity-60');
+        }
+      }
+
+      async function testConnection() {
+        const cfg = saveSettings();
+        try {
+          const url = `${ghContentsUrl(cfg)}?ref=${encodeURIComponent(cfg.branch)}`;
+          const res = await fetch(url, { headers: ghHeaders(cfg) });
+          if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+          $('#conn-status').textContent = '✓ Connected';
+          $('#conn-status').className = 'text-[10px] text-emerald-400';
+          toast('Connection OK');
+        } catch (e) {
+          $('#conn-status').textContent = '✗ ' + e.message;
+          $('#conn-status').className = 'text-[10px] text-red-400';
+          toast('Connection failed', 'err');
+        }
+      }
+
+      $('#btn-reload').addEventListener('click', async () => {
+        if (dirty && !confirm('Discard unsaved changes and reload from GitHub?')) return;
+        try {
+          matches = await fetchMatchesFromGitHub();
+          setDirty(false);
+          renderMatches();
+          toast('Reloaded from GitHub');
+        } catch (e) {
+          toast(e.message, 'err');
+        }
+      });
+
+      $('#btn-publish').addEventListener('click', publishToGitHub);
+
+      /* ── matches.js parser & serializer ─────────────────────────── */
+      function parseMatchesJs(text) {
+        // Extract the array literal and evaluate it safely via Function.
+        const m = text.match(/const\s+MATCHES_DATA\s*=\s*(\[[\s\S]*?\]);?\s*$/m);
+        if (!m) throw new Error('Could not parse matches.js — unexpected format');
+        // eslint-disable-next-line no-new-func
+        const arr = new Function('return ' + m[1])();
+        if (!Array.isArray(arr)) throw new Error('matches.js did not produce an array');
+        return arr;
+      }
+
+      function serializeMatchesJs(arr) {
+        const lines = ['const MATCHES_DATA = ['];
+        arr.forEach((m, i) => {
+          lines.push('  {');
+          lines.push(`    id: ${Number(m.id) || 0},`);
+          lines.push(`    league: ${JSON.stringify(m.league || '')},`);
+          lines.push(`    time: ${JSON.stringify(m.time || '')},`);
+          lines.push(`    status: ${JSON.stringify(m.status || '')},`);
+          lines.push(`    day: ${JSON.stringify(m.day || 'today')},`);
+          lines.push(`    isImportant: ${!!m.isImportant},`);
+          lines.push(`    link: ${JSON.stringify(m.link || '')},`);
+          lines.push('    homeTeam: {');
+          lines.push(`      name: ${JSON.stringify(m.homeTeam?.name || '')},`);
+          lines.push(`      logo: ${JSON.stringify(m.homeTeam?.logo || '')}`);
+          lines.push('    },');
+          lines.push('    awayTeam: {');
+          lines.push(`      name: ${JSON.stringify(m.awayTeam?.name || '')},`);
+          lines.push(`      logo: ${JSON.stringify(m.awayTeam?.logo || '')}`);
+          lines.push('    }');
+          lines.push('  }' + (i === arr.length - 1 ? '' : ','));
+        });
+        lines.push('];');
+        lines.push('');
+        return lines.join('\n');
+      }
+
+      function validateMatches() {
+        const ids = new Set();
+        for (const m of matches) {
+          if (!m.id) {
+            toast('Every match needs an ID', 'err');
+            return false;
+          }
+          if (ids.has(m.id)) {
+            toast(`Duplicate ID: ${m.id}`, 'err');
+            return false;
+          }
+          ids.add(m.id);
+          if (!m.homeTeam?.name || !m.awayTeam?.name) {
+            toast(`Match ${m.id}: both team names required`, 'err');
+            return false;
+          }
+        }
+        return true;
+      }
+
+      /* ── Boot ───────────────────────────────────────────────────── */
+      async function boot() {
+        loadSettings();
+        initGlobalDatalists();
+        const draft = localStorage.getItem(STORAGE.draft);
+        if (draft) {
+          try {
+            matches = JSON.parse(draft);
+            setDirty(true);
+            renderMatches();
+            toast('Restored unsaved draft', 'warn');
+            // Still try to fetch baseSha in the background so publish works.
+            fetchMatchesFromGitHub().catch(() => {});
+            return;
+          } catch (_) {
+            localStorage.removeItem(STORAGE.draft);
+          }
+        }
+        try {
+          matches = await fetchMatchesFromGitHub();
+          renderMatches();
+        } catch (e) {
+          // Fall back to local matches.js (page is served alongside it).
+          try {
+            const res = await fetch('matches.js', { cache: 'no-store' });
+            const text = await res.text();
+            matches = parseMatchesJs(text);
+            renderMatches();
+            toast('Loaded local matches.js (GitHub unreachable — add token to publish)', 'warn');
+          } catch (e2) {
+            toast('Could not load matches: ' + e2.message, 'err');
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

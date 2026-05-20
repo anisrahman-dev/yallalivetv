@@ -8,13 +8,13 @@ Follow the instructions below to easily **Enable** or **Disable** any of the ad 
 
 ## 🌓 How to Control the Ads
 
-To toggle any of the ad units, search for the corresponding keyword in `index.html` and follow these quick edits:
+To toggle any of the ad units, search for the corresponding keyword in `home.html` and follow these quick edits:
 
 ### 1. The Gutter Skyscraper Ads (Left & Right Sides)
 These are horizontal side-by-side skyscraper banner ad frames designed specifically for wide viewports.
 
 *   **To Enable**:
-    1. Search for the section labeled `<!-- 🚫 TEMPORARILY DISABLED: Gutter Skyscraper Ads (Left & Right Sides)` in `index.html` (approx. line 62).
+    1. Search for the section labeled `<!-- 🚫 TEMPORARILY DISABLED: Gutter Skyscraper Ads (Left & Right Sides)` in `home.html` (approx. line 62).
     2. Remove the outer comment wrapper `<!--` at the start and `-->` at the very end of the block.
     3. Make sure to change `type="text/plain"` back to `type="text/javascript"` inside all four `<script>` tags in this block so the browser executes them.
 *   **To Disable**:
@@ -27,7 +27,7 @@ These are horizontal side-by-side skyscraper banner ad frames designed specifica
 This is the dynamic native ad banner displayed directly underneath the match list for both mobile and web visitors.
 
 *   **To Enable**:
-    1. Search for the section labeled `<!-- 🚫 TEMPORARILY DISABLED: Bottom Match Section Ad Banner` in `index.html` (approx. line 228).
+    1. Search for the section labeled `<!-- 🚫 TEMPORARILY DISABLED: Bottom Match Section Ad Banner` in `home.html` (approx. line 228).
     2. Remove the outer comment wrapper `<!--` and `-->`.
     3. Change `type="text/plain"` on the `<script>` tag back to `type="text/javascript"`.
 *   **To Disable**:
@@ -38,7 +38,7 @@ This is the dynamic native ad banner displayed directly underneath the match lis
 
 ## 💻 Exact Backup Code Structures
 
-If the ad blocks in `index.html` are ever lost or deleted, you can copy-paste these exact code patterns back into your files:
+If the ad blocks in `home.html` are ever lost or deleted, you can copy-paste these exact code patterns back into your files:
 
 ### 📄 Left & Right Skyscraper Ads Code Block
 Place this directly after the opening `<body>` tag:
