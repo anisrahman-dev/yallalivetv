@@ -1,18 +1,18 @@
 const MATCHES_DATA = [
   {
     id: 1,
-    league: "Fifa",
-    time: "7",
-    status: "rtrtr",
+    league: "England, English Premier League",
+    time: "1:30 AM",
+    status: "",
     day: "today",
     isImportant: true,
     link: "https://t.me",
     homeTeam: {
-      name: "xctrt",
+      name: "Bournemouth",
       logo: "logos/bournemouth.svg"
     },
     awayTeam: {
-      name: "trcxcxcx",
+      name: "Everton",
       logo: "logos/cameroon.svg"
     }
   }
