@@ -26,11 +26,11 @@ const MATCHES_DATA = [
     link: "https://t.me",
     homeTeam: {
       name: "Turkey",
-      logo: "logos/bournemouth.svg"
+      logo: "logos/chelsea.svg"
     },
     awayTeam: {
       name: "Argentina",
-      logo: "logos/cameroon.svg"
+      logo: "logos/egypt.svg"
     }
   }
 ];
