@@ -939,36 +939,7 @@
         );
         if (todayMatches.length === 0) return;
 
-        // 2. Select top featured match for Title/Meta tag targeting
-        const featuredMatch = todayMatches[0];
-        const matchTitleStr = `${featuredMatch.homeTeam.name} vs ${featuredMatch.awayTeam.name}`;
-
-        // 3. Dynamically rewrite Titles to capture active match search volume
-        const baseTitle = `Yalla Live – Watch ${matchTitleStr} Live Stream | Yalla Shoot`;
-        document.title = baseTitle;
-
-        // Update Open Graph and Twitter card titles
-        const ogTitle = document.querySelector('meta[property="og:title"]');
-        if (ogTitle) ogTitle.setAttribute('content', baseTitle);
-        const twitterTitle = document.querySelector(
-          'meta[name="twitter:title"]',
-        );
-        if (twitterTitle) twitterTitle.setAttribute('content', baseTitle);
-
-        // 4. Dynamically rewrite Description snippets
-        const baseDesc = `Watch ${matchTitleStr} live on Yalla Live. Enjoy high-quality Yalla Shoot live streaming, real-time scores, and fixtures on mobile in HD. Watch live now!`;
-        const metaDesc = document.querySelector('meta[name="description"]');
-        if (metaDesc) metaDesc.setAttribute('content', baseDesc);
-        const ogDesc = document.querySelector(
-          'meta[property="og:description"]',
-        );
-        if (ogDesc) ogDesc.setAttribute('content', baseDesc);
-        const twitterDesc = document.querySelector(
-          'meta[name="twitter:description"]',
-        );
-        if (twitterDesc) twitterDesc.setAttribute('content', baseDesc);
-
-        // 5. Programmatically inject dynamic featured match banner in SEO section
+        // Programmatically inject dynamic featured match banner in SEO section
         const seoSection = document.querySelector('.space-y-5'); // left column of the SEO section
         if (seoSection) {
           const bannerHtml = `
