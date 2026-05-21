@@ -3,7 +3,7 @@ const MATCHES_DATA = [
     id: 1,
     league: "Copa America",
     time: "3:00 AM",
-    status: "Live",
+    status: "",
     day: "today",
     isImportant: true,
     servers: ["https://t.me"],
