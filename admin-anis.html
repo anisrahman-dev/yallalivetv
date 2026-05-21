@@ -125,15 +125,37 @@
         <!-- Site Settings -->
         <div class="bg-surface border border-slate-700/50 rounded-2xl p-4 sm:p-5">
           <h2 class="text-sm font-extrabold uppercase tracking-widest text-slate-300 mb-3 sm:mb-4">Site Settings</h2>
-          <div class="flex items-center justify-between gap-3 sm:gap-4">
-            <div class="flex-1 min-w-0">
-              <div class="text-sm font-bold text-slate-100">Ads on home page</div>
-              <p class="text-[11px] text-slate-500 mt-0.5">Toggles all ad slots (gutter skyscrapers + bottom banner). Click Publish to apply.</p>
+          <div class="divide-y divide-slate-700/50">
+            <div class="flex items-center justify-between gap-3 sm:gap-4 py-3 first:pt-0">
+              <div class="flex-1 min-w-0">
+                <div class="text-sm font-bold text-slate-100">Sidebar &amp; banner ads</div>
+                <p class="text-[11px] text-slate-500 mt-0.5">Gutter skyscrapers + bottom match-section banner.</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
+                <input id="ads-enabled" type="checkbox" class="sr-only peer" />
+                <div class="w-12 h-7 bg-slate-700 rounded-full peer-checked:bg-primary transition-colors peer-focus:ring-2 peer-focus:ring-primary/40 after:content-[''] after:absolute after:top-[3px] after:left-[3px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-transform peer-checked:after:translate-x-5"></div>
+              </label>
             </div>
-            <label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
-              <input id="ads-enabled" type="checkbox" class="sr-only peer" />
-              <div class="w-12 h-7 bg-slate-700 rounded-full peer-checked:bg-primary transition-colors peer-focus:ring-2 peer-focus:ring-primary/40 after:content-[''] after:absolute after:top-[3px] after:left-[3px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-transform peer-checked:after:translate-x-5"></div>
-            </label>
+            <div class="flex items-center justify-between gap-3 sm:gap-4 py-3">
+              <div class="flex-1 min-w-0">
+                <div class="text-sm font-bold text-slate-100">Vignette</div>
+                <p class="text-[11px] text-slate-500 mt-0.5">Full-page interstitial ad (Monetag zone 11036330).</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
+                <input id="vignette-enabled" type="checkbox" class="sr-only peer" />
+                <div class="w-12 h-7 bg-slate-700 rounded-full peer-checked:bg-primary transition-colors peer-focus:ring-2 peer-focus:ring-primary/40 after:content-[''] after:absolute after:top-[3px] after:left-[3px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-transform peer-checked:after:translate-x-5"></div>
+              </label>
+            </div>
+            <div class="flex items-center justify-between gap-3 sm:gap-4 py-3 last:pb-0">
+              <div class="flex-1 min-w-0">
+                <div class="text-sm font-bold text-slate-100">Multi ad</div>
+                <p class="text-[11px] text-slate-500 mt-0.5">Auto-format multi-ad tag (zone 241500).</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
+                <input id="multiad-enabled" type="checkbox" class="sr-only peer" />
+                <div class="w-12 h-7 bg-slate-700 rounded-full peer-checked:bg-primary transition-colors peer-focus:ring-2 peer-focus:ring-primary/40 after:content-[''] after:absolute after:top-[3px] after:left-[3px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-transform peer-checked:after:translate-x-5"></div>
+              </label>
+            </div>
           </div>
         </div>
 
@@ -494,7 +516,7 @@
       let baseSha = null;
       let dirty = false;
 
-      let siteConfig = { adsEnabled: false };
+      let siteConfig = { adsEnabled: false, vignetteEnabled: false, multiAdEnabled: false };
       let siteConfigSha = null;
       let siteConfigDirty = false;
 
@@ -604,17 +626,21 @@
       });
 
       /* ── Site Config (ads toggle) ───────────────────────────────── */
+      const DEFAULT_SITE_CONFIG = { adsEnabled: false, vignetteEnabled: false, multiAdEnabled: false };
       function parseSiteConfig(text) {
         const m = text.match(/window\.SITE_CONFIG\s*=\s*(\{[\s\S]*?\})\s*;?\s*$/m);
-        if (!m) return { adsEnabled: false };
+        if (!m) return { ...DEFAULT_SITE_CONFIG };
         // eslint-disable-next-line no-new-func
-        return new Function('return ' + m[1])();
+        const parsed = new Function('return ' + m[1])();
+        return { ...DEFAULT_SITE_CONFIG, ...parsed };
       }
       function serializeSiteConfig(cfg) {
         return `window.SITE_CONFIG = ${JSON.stringify(cfg, null, 2)};\n`;
       }
       function applySiteConfigToUI() {
         $('#ads-enabled').checked = !!siteConfig.adsEnabled;
+        $('#vignette-enabled').checked = !!siteConfig.vignetteEnabled;
+        $('#multiad-enabled').checked = !!siteConfig.multiAdEnabled;
       }
       async function fetchSiteConfigFromGitHub() {
         const cfg = readSettings();
@@ -623,7 +649,7 @@
         const res = await fetch(url, { headers: ghHeaders(cfg), cache: 'no-store' });
         if (res.status === 404) {
           siteConfigSha = null;
-          return { adsEnabled: false };
+          return { ...DEFAULT_SITE_CONFIG };
         }
         if (!res.ok) throw new Error(`GitHub fetch failed: ${res.status}`);
         const data = await res.json();
@@ -633,6 +659,14 @@
       }
       $('#ads-enabled').addEventListener('change', (e) => {
         siteConfig.adsEnabled = e.target.checked;
+        setSiteConfigDirty(true);
+      });
+      $('#vignette-enabled').addEventListener('change', (e) => {
+        siteConfig.vignetteEnabled = e.target.checked;
+        setSiteConfigDirty(true);
+      });
+      $('#multiad-enabled').addEventListener('change', (e) => {
+        siteConfig.multiAdEnabled = e.target.checked;
         setSiteConfigDirty(true);
       });
 
@@ -864,7 +898,7 @@
             siteConfigSha = await publishFile(
               cfg, 'site-config.js',
               serializeSiteConfig(siteConfig),
-              `chore(config): ads ${siteConfig.adsEnabled ? 'enabled' : 'disabled'}`
+              `chore(config): site settings updated (ads:${siteConfig.adsEnabled ? 'on' : 'off'}, vignette:${siteConfig.vignetteEnabled ? 'on' : 'off'}, multi:${siteConfig.multiAdEnabled ? 'on' : 'off'})`
             );
             setSiteConfigDirty(false);
             published.push('site config');

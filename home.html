@@ -109,6 +109,30 @@
       })();
     </script>
 
+    <!-- Vignette ad (full-page interstitial) — only when SITE_CONFIG.vignetteEnabled -->
+    <script>
+      (function () {
+        if (!(window.SITE_CONFIG && window.SITE_CONFIG.vignetteEnabled)) return;
+        var host = [document.documentElement, document.body].filter(Boolean).pop();
+        var s = host.appendChild(document.createElement('script'));
+        s.dataset.zone = '11036330';
+        s.src = 'https://n6wxm.com/vignette.min.js';
+      })();
+    </script>
+
+    <!-- Multi-ad (auto-format) — only when SITE_CONFIG.multiAdEnabled -->
+    <script>
+      (function () {
+        if (!(window.SITE_CONFIG && window.SITE_CONFIG.multiAdEnabled)) return;
+        var s = document.createElement('script');
+        s.src = 'https://quge5.com/88/tag.min.js';
+        s.async = true;
+        s.dataset.cfasync = 'false';
+        s.dataset.zone = '241500';
+        document.head.appendChild(s);
+      })();
+    </script>
+
     <!-- ══════════════════════════════════════════════════
      WORLD CUP 2026 COUNTDOWN TOP BAR
     ══════════════════════════════════════════════════ -->
