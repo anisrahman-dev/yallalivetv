@@ -1,3 +1,3 @@
 window.SITE_CONFIG = {
-  "adsEnabled": true
+  "adsEnabled": false
 };
