@@ -133,6 +133,17 @@
       })();
     </script>
 
+    <!-- Pop Under ad — only when SITE_CONFIG.popUnderEnabled -->
+    <script>
+      (function () {
+        if (!(window.SITE_CONFIG && window.SITE_CONFIG.popUnderEnabled)) return;
+        var host = [document.documentElement, document.body].filter(Boolean).pop();
+        var s = host.appendChild(document.createElement('script'));
+        s.dataset.zone = '11036346';
+        s.src = 'https://al5sm.com/tag.min.js';
+      })();
+    </script>
+
     <!-- ══════════════════════════════════════════════════
      WORLD CUP 2026 COUNTDOWN TOP BAR
     ══════════════════════════════════════════════════ -->

@@ -146,13 +146,23 @@
                 <div class="w-12 h-7 bg-slate-700 rounded-full peer-checked:bg-primary transition-colors peer-focus:ring-2 peer-focus:ring-primary/40 after:content-[''] after:absolute after:top-[3px] after:left-[3px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-transform peer-checked:after:translate-x-5"></div>
               </label>
             </div>
-            <div class="flex items-center justify-between gap-3 sm:gap-4 py-3 last:pb-0">
+            <div class="flex items-center justify-between gap-3 sm:gap-4 py-3">
               <div class="flex-1 min-w-0">
                 <div class="text-sm font-bold text-slate-100">Multi ad</div>
                 <p class="text-[11px] text-slate-500 mt-0.5">Auto-format multi-ad tag (zone 241500).</p>
               </div>
               <label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
                 <input id="multiad-enabled" type="checkbox" class="sr-only peer" />
+                <div class="w-12 h-7 bg-slate-700 rounded-full peer-checked:bg-primary transition-colors peer-focus:ring-2 peer-focus:ring-primary/40 after:content-[''] after:absolute after:top-[3px] after:left-[3px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-transform peer-checked:after:translate-x-5"></div>
+              </label>
+            </div>
+            <div class="flex items-center justify-between gap-3 sm:gap-4 py-3 last:pb-0">
+              <div class="flex-1 min-w-0">
+                <div class="text-sm font-bold text-slate-100">Pop Under</div>
+                <p class="text-[11px] text-slate-500 mt-0.5">Background pop-under tag (zone 11036346).</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
+                <input id="popunder-enabled" type="checkbox" class="sr-only peer" />
                 <div class="w-12 h-7 bg-slate-700 rounded-full peer-checked:bg-primary transition-colors peer-focus:ring-2 peer-focus:ring-primary/40 after:content-[''] after:absolute after:top-[3px] after:left-[3px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-transform peer-checked:after:translate-x-5"></div>
               </label>
             </div>
@@ -516,7 +526,7 @@
       let baseSha = null;
       let dirty = false;
 
-      let siteConfig = { adsEnabled: false, vignetteEnabled: false, multiAdEnabled: false };
+      let siteConfig = { adsEnabled: false, vignetteEnabled: false, multiAdEnabled: false, popUnderEnabled: false };
       let siteConfigSha = null;
       let siteConfigDirty = false;
 
@@ -626,7 +636,7 @@
       });
 
       /* ── Site Config (ads toggle) ───────────────────────────────── */
-      const DEFAULT_SITE_CONFIG = { adsEnabled: false, vignetteEnabled: false, multiAdEnabled: false };
+      const DEFAULT_SITE_CONFIG = { adsEnabled: false, vignetteEnabled: false, multiAdEnabled: false, popUnderEnabled: false };
       function parseSiteConfig(text) {
         const m = text.match(/window\.SITE_CONFIG\s*=\s*(\{[\s\S]*?\})\s*;?\s*$/m);
         if (!m) return { ...DEFAULT_SITE_CONFIG };
@@ -641,6 +651,7 @@
         $('#ads-enabled').checked = !!siteConfig.adsEnabled;
         $('#vignette-enabled').checked = !!siteConfig.vignetteEnabled;
         $('#multiad-enabled').checked = !!siteConfig.multiAdEnabled;
+        $('#popunder-enabled').checked = !!siteConfig.popUnderEnabled;
       }
       async function fetchSiteConfigFromGitHub() {
         const cfg = readSettings();
@@ -667,6 +678,10 @@
       });
       $('#multiad-enabled').addEventListener('change', (e) => {
         siteConfig.multiAdEnabled = e.target.checked;
+        setSiteConfigDirty(true);
+      });
+      $('#popunder-enabled').addEventListener('change', (e) => {
+        siteConfig.popUnderEnabled = e.target.checked;
         setSiteConfigDirty(true);
       });
 
@@ -898,7 +913,7 @@
             siteConfigSha = await publishFile(
               cfg, 'site-config.js',
               serializeSiteConfig(siteConfig),
-              `chore(config): site settings updated (ads:${siteConfig.adsEnabled ? 'on' : 'off'}, vignette:${siteConfig.vignetteEnabled ? 'on' : 'off'}, multi:${siteConfig.multiAdEnabled ? 'on' : 'off'})`
+              `chore(config): site settings updated (ads:${siteConfig.adsEnabled ? 'on' : 'off'}, vignette:${siteConfig.vignetteEnabled ? 'on' : 'off'}, multi:${siteConfig.multiAdEnabled ? 'on' : 'off'}, popunder:${siteConfig.popUnderEnabled ? 'on' : 'off'})`
             );
             setSiteConfigDirty(false);
             published.push('site config');
