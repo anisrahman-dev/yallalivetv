@@ -2,5 +2,6 @@ window.SITE_CONFIG = {
   "adsEnabled": false,
   "vignetteEnabled": false,
   "multiAdEnabled": false,
-  "popUnderEnabled": false
+  "popUnderEnabled": false,
+  "countdownSeconds": 10
 };

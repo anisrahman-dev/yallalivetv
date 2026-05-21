@@ -747,10 +747,20 @@
             ? `<span class="match-info-badge text-[9px] md:text-xs px-2 py-0.5" style="white-space: nowrap;">${match.status}</span>`
             : '';
 
-          const hasLink = match.link && match.link.trim() !== '';
+          // Normalize servers: prefer match.servers array, fall back to legacy single `link`.
+          const servers = (Array.isArray(match.servers) ? match.servers : [])
+            .map((s) => (typeof s === 'string' ? s.trim() : ''))
+            .filter(Boolean);
+          if (servers.length === 0 && match.link && match.link.trim()) {
+            servers.push(match.link.trim());
+          }
+          window.__matchServers = window.__matchServers || {};
+          window.__matchServers[match.id] = servers;
+
+          const hasLink = servers.length > 0;
           const cardTag = hasLink ? 'a' : 'article';
           const cardAttrs = hasLink
-            ? `onclick="handleMatchClick(event, '${match.link}')" class="custom-match-card block cursor-pointer hover:no-underline"`
+            ? `onclick="handleMatchClick(event, ${match.id})" class="custom-match-card block cursor-pointer hover:no-underline"`
             : `class="custom-match-card"`;
 
           const cardHtml = `
@@ -838,9 +848,32 @@
       // 4. Ad Redirection Modal Controller
       let redirectTimer = null;
 
-      function handleMatchClick(event, redirectUrl) {
+      function handleMatchClick(event, matchId) {
         if (event) {
           event.preventDefault();
+        }
+
+        const servers = (window.__matchServers && window.__matchServers[matchId]) || [];
+        if (servers.length === 0) return;
+
+        window.__currentServers = servers;
+        window.__selectedServerIdx = 0;
+
+        // Build server picker UI (only shown when there are 2+ servers).
+        const picker = document.getElementById('server-picker');
+        if (picker) {
+          if (servers.length > 1) {
+            picker.innerHTML = servers
+              .map(
+                (_, i) =>
+                  `<button type="button" data-server-idx="${i}" onclick="selectServer(${i})" class="px-3 py-1.5 text-xs font-bold uppercase tracking-wider rounded-lg transition-colors ${i === 0 ? 'bg-[#ee335f] text-white' : 'bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700'}">Server ${i + 1}</button>`,
+              )
+              .join('');
+            picker.classList.remove('hidden');
+          } else {
+            picker.innerHTML = '';
+            picker.classList.add('hidden');
+          }
         }
 
         // Hide scrollbars on body when modal is open
@@ -885,8 +918,8 @@
         countdownCircle.classList.remove('hidden');
         manualRedirectContainer.classList.add('hidden');
 
-        // Reset countdown to 10 seconds!
-        let count = 10;
+        // Countdown duration comes from site config (admin-controlled); fall back to 10.
+        let count = Math.max(0, Number(window.SITE_CONFIG && window.SITE_CONFIG.countdownSeconds) || 10);
         const countdownEl = document.getElementById('countdown-number');
         countdownEl.innerText = count;
 
@@ -904,8 +937,10 @@
             clearInterval(redirectTimer);
             redirectTimer = null;
 
-            // Redirect in a new tab strictly AFTER 10 seconds!
-            const newWindow = window.open(redirectUrl, '_blank');
+            // Redirect to the currently selected server (default: first).
+            const targetUrl =
+              window.__currentServers[window.__selectedServerIdx || 0];
+            const newWindow = window.open(targetUrl, '_blank');
 
             // If the browser popup blocker intercepts it
             if (
@@ -924,7 +959,7 @@
 
               // Set href and show the button
               const manualBtn = document.getElementById('manual-redirect-btn');
-              manualBtn.href = redirectUrl;
+              manualBtn.href = targetUrl;
               manualRedirectContainer.classList.remove('hidden');
             } else {
               // Redirect succeeded! Clean up and close modal smoothly
@@ -932,6 +967,24 @@
             }
           }
         }, 1000);
+      }
+
+      // Called when the visitor picks a different server inside the modal.
+      // Updates the selected index and re-paints the picker buttons.
+      function selectServer(idx) {
+        window.__selectedServerIdx = idx;
+        const picker = document.getElementById('server-picker');
+        if (!picker) return;
+        picker.querySelectorAll('button[data-server-idx]').forEach((b) => {
+          const i = Number(b.getAttribute('data-server-idx'));
+          if (i === idx) {
+            b.className =
+              'px-3 py-1.5 text-xs font-bold uppercase tracking-wider rounded-lg transition-colors bg-[#ee335f] text-white';
+          } else {
+            b.className =
+              'px-3 py-1.5 text-xs font-bold uppercase tracking-wider rounded-lg transition-colors bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700';
+          }
+        });
       }
 
       function closeRedirectModal() {
@@ -1191,6 +1244,9 @@
             Please wait while we establish a secure high-speed connection.
           </p>
         </div>
+
+        <!-- Server picker — only shown when a match has 2+ servers. Populated by handleMatchClick(). -->
+        <div id="server-picker" class="hidden flex flex-wrap justify-center gap-2 z-10"></div>
 
         <!-- Animated Countdown Circle -->
         <div

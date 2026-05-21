@@ -156,7 +156,7 @@
                 <div class="w-12 h-7 bg-slate-700 rounded-full peer-checked:bg-primary transition-colors peer-focus:ring-2 peer-focus:ring-primary/40 after:content-[''] after:absolute after:top-[3px] after:left-[3px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-transform peer-checked:after:translate-x-5"></div>
               </label>
             </div>
-            <div class="flex items-center justify-between gap-3 sm:gap-4 py-3 last:pb-0">
+            <div class="flex items-center justify-between gap-3 sm:gap-4 py-3">
               <div class="flex-1 min-w-0">
                 <div class="text-sm font-bold text-slate-100">Pop Under</div>
                 <p class="text-[11px] text-slate-500 mt-0.5">Background pop-under tag (zone 11036346).</p>
@@ -165,6 +165,13 @@
                 <input id="popunder-enabled" type="checkbox" class="sr-only peer" />
                 <div class="w-12 h-7 bg-slate-700 rounded-full peer-checked:bg-primary transition-colors peer-focus:ring-2 peer-focus:ring-primary/40 after:content-[''] after:absolute after:top-[3px] after:left-[3px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-transform peer-checked:after:translate-x-5"></div>
               </label>
+            </div>
+            <div class="flex items-center justify-between gap-3 sm:gap-4 py-3 last:pb-0">
+              <div class="flex-1 min-w-0">
+                <div class="text-sm font-bold text-slate-100">Popup countdown</div>
+                <p class="text-[11px] text-slate-500 mt-0.5">Seconds the redirect modal shows (with ads) before opening the stream.</p>
+              </div>
+              <input id="countdown-seconds" type="number" min="0" max="60" step="1" class="w-20 bg-slate-900/80 border border-slate-700 rounded-lg px-3 py-2 text-sm text-center font-bold" />
             </div>
           </div>
         </div>
@@ -237,8 +244,11 @@
             </label>
           </div>
           <div class="md:col-span-12">
-            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Stream Link</label>
-            <input data-field="link" type="url" class="w-full bg-slate-900/80 border border-slate-700 rounded-lg px-3 py-2 text-sm" placeholder="https://t.me" />
+            <div class="flex items-center justify-between mb-1">
+              <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Stream Servers</label>
+              <button type="button" data-action="add-server" class="text-[10px] font-bold uppercase tracking-wider text-accent hover:underline">+ Add Server</button>
+            </div>
+            <div data-field="servers-list" class="space-y-2"></div>
           </div>
           <div class="md:col-span-6">
             <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Home Team Name</label>
@@ -526,7 +536,7 @@
       let baseSha = null;
       let dirty = false;
 
-      let siteConfig = { adsEnabled: false, vignetteEnabled: false, multiAdEnabled: false, popUnderEnabled: false };
+      let siteConfig = { adsEnabled: false, vignetteEnabled: false, multiAdEnabled: false, popUnderEnabled: false, countdownSeconds: 10 };
       let siteConfigSha = null;
       let siteConfigDirty = false;
 
@@ -636,7 +646,7 @@
       });
 
       /* ── Site Config (ads toggle) ───────────────────────────────── */
-      const DEFAULT_SITE_CONFIG = { adsEnabled: false, vignetteEnabled: false, multiAdEnabled: false, popUnderEnabled: false };
+      const DEFAULT_SITE_CONFIG = { adsEnabled: false, vignetteEnabled: false, multiAdEnabled: false, popUnderEnabled: false, countdownSeconds: 10 };
       function parseSiteConfig(text) {
         const m = text.match(/window\.SITE_CONFIG\s*=\s*(\{[\s\S]*?\})\s*;?\s*$/m);
         if (!m) return { ...DEFAULT_SITE_CONFIG };
@@ -652,6 +662,7 @@
         $('#vignette-enabled').checked = !!siteConfig.vignetteEnabled;
         $('#multiad-enabled').checked = !!siteConfig.multiAdEnabled;
         $('#popunder-enabled').checked = !!siteConfig.popUnderEnabled;
+        $('#countdown-seconds').value = Number.isFinite(siteConfig.countdownSeconds) ? siteConfig.countdownSeconds : 10;
       }
       async function fetchSiteConfigFromGitHub() {
         const cfg = readSettings();
@@ -684,6 +695,11 @@
         siteConfig.popUnderEnabled = e.target.checked;
         setSiteConfigDirty(true);
       });
+      $('#countdown-seconds').addEventListener('input', (e) => {
+        const v = Number(e.target.value);
+        siteConfig.countdownSeconds = Number.isFinite(v) && v >= 0 ? v : 10;
+        setSiteConfigDirty(true);
+      });
 
       /* ── Datalist helpers ───────────────────────────────────────── */
       function fillDatalist(dl, items) {
@@ -705,6 +721,40 @@
       }
 
       /* ── Match list rendering ───────────────────────────────────── */
+      function renumberServerRows(container) {
+        container.querySelectorAll('[data-server-row]').forEach((row, i) => {
+          row.querySelector('span').textContent = `Server ${i + 1}`;
+        });
+      }
+
+      function addServerRow(container, url, idx, matchNode) {
+        const row = document.createElement('div');
+        row.className = 'flex gap-2 items-center';
+        row.setAttribute('data-server-row', '');
+        row.innerHTML =
+          '<span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 w-16 flex-shrink-0 text-right pr-1"></span>' +
+          '<input data-field="server-url" type="url" class="flex-1 bg-slate-900/80 border border-slate-700 rounded-lg px-3 py-2 text-sm" placeholder="https://t.me" />' +
+          '<button type="button" data-action="remove-server" class="text-slate-500 hover:text-red-400 transition px-2 py-1 text-lg flex-shrink-0 leading-none">×</button>';
+        row.querySelector('input').value = url || '';
+        container.appendChild(row);
+        renumberServerRows(container);
+
+        const input = row.querySelector('input');
+        input.addEventListener('input', () => syncRow(idx, matchNode));
+        input.addEventListener('change', () => syncRow(idx, matchNode));
+        row.querySelector('[data-action="remove-server"]').addEventListener('click', () => {
+          if (container.children.length <= 1) {
+            // Last row — just clear it instead of removing
+            input.value = '';
+            syncRow(idx, matchNode);
+            return;
+          }
+          row.remove();
+          renumberServerRows(container);
+          syncRow(idx, matchNode);
+        });
+      }
+
       function renderMatches() {
         const list = $('#match-list');
         list.innerHTML = '';
@@ -718,7 +768,17 @@
           node.querySelector('[data-field="day"]').value = m.day ?? 'today';
           node.querySelector('[data-field="status"]').value = m.status ?? '';
           node.querySelector('[data-field="isImportant"]').checked = !!m.isImportant;
-          node.querySelector('[data-field="link"]').value = m.link ?? '';
+          // Servers list: normalize from `servers` array (preferred) or legacy `link` field.
+          const serversList = node.querySelector('[data-field="servers-list"]');
+          serversList.innerHTML = '';
+          let initialServers = Array.isArray(m.servers) ? m.servers.slice() : [];
+          if (initialServers.length === 0 && m.link) initialServers = [m.link];
+          if (initialServers.length === 0) initialServers = [''];
+          initialServers.forEach((url) => addServerRow(serversList, url, idx, node));
+          node.querySelector('[data-action="add-server"]').addEventListener('click', () => {
+            addServerRow(serversList, '', idx, node);
+            syncRow(idx, node);
+          });
           node.querySelector('[data-field="homeName"]').value = m.homeTeam?.name ?? '';
           node.querySelector('[data-field="awayName"]').value = m.awayTeam?.name ?? '';
 
@@ -779,7 +839,13 @@
         m.day = node.querySelector('[data-field="day"]').value;
         m.status = node.querySelector('[data-field="status"]').value;
         m.isImportant = node.querySelector('[data-field="isImportant"]').checked;
-        m.link = node.querySelector('[data-field="link"]').value;
+        m.servers = Array.from(
+          node.querySelectorAll('[data-server-row] [data-field="server-url"]')
+        )
+          .map((input) => input.value.trim())
+          .filter(Boolean);
+        // Drop legacy single-link field — admin always writes `servers` going forward.
+        delete m.link;
         m.homeTeam = {
           name: node.querySelector('[data-field="homeName"]').value,
           logo: node.querySelector('[data-field="homeLogo"]').value
@@ -815,7 +881,7 @@
           status: '',
           day: 'today',
           isImportant: false,
-          link: 'https://t.me',
+          servers: ['https://t.me'],
           homeTeam: { name: '', logo: LOGOS[0] },
           awayTeam: { name: '', logo: LOGOS[1] }
         });
@@ -913,7 +979,7 @@
             siteConfigSha = await publishFile(
               cfg, 'site-config.js',
               serializeSiteConfig(siteConfig),
-              `chore(config): site settings updated (ads:${siteConfig.adsEnabled ? 'on' : 'off'}, vignette:${siteConfig.vignetteEnabled ? 'on' : 'off'}, multi:${siteConfig.multiAdEnabled ? 'on' : 'off'}, popunder:${siteConfig.popUnderEnabled ? 'on' : 'off'})`
+              `chore(config): site settings updated (ads:${siteConfig.adsEnabled ? 'on' : 'off'}, vignette:${siteConfig.vignetteEnabled ? 'on' : 'off'}, multi:${siteConfig.multiAdEnabled ? 'on' : 'off'}, popunder:${siteConfig.popUnderEnabled ? 'on' : 'off'}, countdown:${siteConfig.countdownSeconds}s)`
             );
             setSiteConfigDirty(false);
             published.push('site config');
@@ -983,7 +1049,10 @@
           lines.push(`    status: ${JSON.stringify(m.status || '')},`);
           lines.push(`    day: ${JSON.stringify(m.day || 'today')},`);
           lines.push(`    isImportant: ${!!m.isImportant},`);
-          lines.push(`    link: ${JSON.stringify(m.link || '')},`);
+          const servers = (Array.isArray(m.servers) ? m.servers : (m.link ? [m.link] : []))
+            .map((s) => (typeof s === 'string' ? s.trim() : ''))
+            .filter(Boolean);
+          lines.push(`    servers: ${JSON.stringify(servers)},`);
           lines.push('    homeTeam: {');
           lines.push(`      name: ${JSON.stringify(m.homeTeam?.name || '')},`);
           lines.push(`      logo: ${JSON.stringify(m.homeTeam?.logo || '')}`);
