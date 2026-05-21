@@ -1,5 +1,5 @@
 window.SITE_CONFIG = {
   "adsEnabled": false,
-  "vignetteEnabled": true,
+  "vignetteEnabled": false,
   "multiAdEnabled": false
 };
