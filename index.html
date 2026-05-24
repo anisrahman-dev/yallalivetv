@@ -1117,6 +1117,13 @@
         const servers = (window.__matchServers && window.__matchServers[matchId]) || [];
         if (servers.length === 0) return;
 
+        // If countdown popup is disabled in site-config, open the first server immediately.
+        const countdownEnabled = !(window.SITE_CONFIG && window.SITE_CONFIG.countdownEnabled === false);
+        if (!countdownEnabled) {
+          window.open(servers[0], '_blank');
+          return;
+        }
+
         window.__currentServers = servers;
         window.__selectedServerIdx = 0;
 

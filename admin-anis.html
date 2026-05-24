@@ -166,10 +166,20 @@
                 <div class="w-12 h-7 bg-slate-700 rounded-full peer-checked:bg-primary transition-colors peer-focus:ring-2 peer-focus:ring-primary/40 after:content-[''] after:absolute after:top-[3px] after:left-[3px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-transform peer-checked:after:translate-x-5"></div>
               </label>
             </div>
+            <div class="flex items-center justify-between gap-3 sm:gap-4 py-3">
+              <div class="flex-1 min-w-0">
+                <div class="text-sm font-bold text-slate-100">Countdown popup</div>
+                <p class="text-[11px] text-slate-500 mt-0.5">When off, clicking a match opens the stream directly (no popup, no ad slot).</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
+                <input id="countdown-enabled" type="checkbox" class="sr-only peer" />
+                <div class="w-12 h-7 bg-slate-700 rounded-full peer-checked:bg-primary transition-colors peer-focus:ring-2 peer-focus:ring-primary/40 after:content-[''] after:absolute after:top-[3px] after:left-[3px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-transform peer-checked:after:translate-x-5"></div>
+              </label>
+            </div>
             <div class="flex items-center justify-between gap-3 sm:gap-4 py-3 last:pb-0">
               <div class="flex-1 min-w-0">
-                <div class="text-sm font-bold text-slate-100">Popup countdown</div>
-                <p class="text-[11px] text-slate-500 mt-0.5">Seconds the redirect modal shows (with ads) before opening the stream.</p>
+                <div class="text-sm font-bold text-slate-100">Countdown duration</div>
+                <p class="text-[11px] text-slate-500 mt-0.5">Seconds the popup waits before opening the stream (ignored if countdown is off).</p>
               </div>
               <input id="countdown-seconds" type="number" min="0" max="60" step="1" class="w-20 bg-slate-900/80 border border-slate-700 rounded-lg px-3 py-2 text-sm text-center font-bold" />
             </div>
@@ -536,7 +546,7 @@
       let baseSha = null;
       let dirty = false;
 
-      let siteConfig = { adsEnabled: false, vignetteEnabled: false, multiAdEnabled: false, popUnderEnabled: false, countdownSeconds: 10 };
+      let siteConfig = { adsEnabled: false, vignetteEnabled: false, multiAdEnabled: false, popUnderEnabled: false, countdownEnabled: true, countdownSeconds: 10 };
       let siteConfigSha = null;
       let siteConfigDirty = false;
 
@@ -646,7 +656,7 @@
       });
 
       /* ── Site Config (ads toggle) ───────────────────────────────── */
-      const DEFAULT_SITE_CONFIG = { adsEnabled: false, vignetteEnabled: false, multiAdEnabled: false, popUnderEnabled: false, countdownSeconds: 10 };
+      const DEFAULT_SITE_CONFIG = { adsEnabled: false, vignetteEnabled: false, multiAdEnabled: false, popUnderEnabled: false, countdownEnabled: true, countdownSeconds: 10 };
       function parseSiteConfig(text) {
         const m = text.match(/window\.SITE_CONFIG\s*=\s*(\{[\s\S]*?\})\s*;?\s*$/m);
         if (!m) return { ...DEFAULT_SITE_CONFIG };
@@ -662,6 +672,7 @@
         $('#vignette-enabled').checked = !!siteConfig.vignetteEnabled;
         $('#multiad-enabled').checked = !!siteConfig.multiAdEnabled;
         $('#popunder-enabled').checked = !!siteConfig.popUnderEnabled;
+        $('#countdown-enabled').checked = siteConfig.countdownEnabled !== false; // default true
         $('#countdown-seconds').value = Number.isFinite(siteConfig.countdownSeconds) ? siteConfig.countdownSeconds : 10;
       }
       async function fetchSiteConfigFromGitHub() {
@@ -693,6 +704,10 @@
       });
       $('#popunder-enabled').addEventListener('change', (e) => {
         siteConfig.popUnderEnabled = e.target.checked;
+        setSiteConfigDirty(true);
+      });
+      $('#countdown-enabled').addEventListener('change', (e) => {
+        siteConfig.countdownEnabled = e.target.checked;
         setSiteConfigDirty(true);
       });
       $('#countdown-seconds').addEventListener('input', (e) => {
@@ -979,7 +994,7 @@
             siteConfigSha = await publishFile(
               cfg, 'site-config.js',
               serializeSiteConfig(siteConfig),
-              `chore(config): site settings updated (ads:${siteConfig.adsEnabled ? 'on' : 'off'}, vignette:${siteConfig.vignetteEnabled ? 'on' : 'off'}, multi:${siteConfig.multiAdEnabled ? 'on' : 'off'}, popunder:${siteConfig.popUnderEnabled ? 'on' : 'off'}, countdown:${siteConfig.countdownSeconds}s)`
+              `chore(config): site settings updated (ads:${siteConfig.adsEnabled ? 'on' : 'off'}, vignette:${siteConfig.vignetteEnabled ? 'on' : 'off'}, multi:${siteConfig.multiAdEnabled ? 'on' : 'off'}, popunder:${siteConfig.popUnderEnabled ? 'on' : 'off'}, countdown:${siteConfig.countdownEnabled ? siteConfig.countdownSeconds + 's' : 'off'})`
             );
             setSiteConfigDirty(false);
             published.push('site config');
