@@ -6,7 +6,7 @@ const MATCHES_DATA = [
     status: "",
     day: "today",
     isImportant: true,
-    servers: [],
+    servers: ["#"],
     homeTeam: {
       name: "Manchester United",
       logo: "logos/man-united.png"
