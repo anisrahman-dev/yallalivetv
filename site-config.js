@@ -3,6 +3,6 @@ window.SITE_CONFIG = {
   "vignetteEnabled": false,
   "multiAdEnabled": false,
   "popUnderEnabled": false,
-  "countdownEnabled": true,
+  "countdownEnabled": false,
   "countdownSeconds": 0
 };
