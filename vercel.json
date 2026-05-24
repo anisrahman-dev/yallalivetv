@@ -1,9 +1,8 @@
 {
   "redirects": [
-    {
-      "source": "/home.html",
-      "destination": "/",
-      "permanent": true
-    }
+    { "source": "/home.html", "destination": "/", "permanent": true }
+  ],
+  "rewrites": [
+    { "source": "/((?!api/|assets/|logos/|.*\\.(?:js|css|png|jpg|jpeg|svg|ico|xml|txt|webp|woff|woff2|ttf)$).*)", "destination": "/index.html" }
   ]
 }
