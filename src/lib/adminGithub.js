@@ -119,8 +119,17 @@ export async function publishFile(cfg, path, content, message) {
 }
 
 export async function testConnection(cfg) {
+  if (!cfg.owner || !cfg.repo) throw new Error('Owner and repo are required')
   const url = `${ghContentsUrl(cfg)}?ref=${encodeURIComponent(cfg.branch)}`
-  const res = await fetch(url, { headers: ghHeaders(cfg) })
-  if (!res.ok) throw new Error(`${res.status} ${res.statusText}`)
-  return true
+  let res
+  try {
+    res = await fetch(url, { headers: ghHeaders(cfg), cache: 'no-store' })
+  } catch (e) {
+    throw new Error(`Network error reaching GitHub (${e.message})`)
+  }
+  if (res.ok) return true
+  if (res.status === 401) throw new Error('401 — invalid or expired token (clear it for a public repo, or paste a fresh one)')
+  if (res.status === 403) throw new Error('403 — rate limited or token missing the repo/contents scope')
+  if (res.status === 404) throw new Error(`404 — ${MATCHES_PATH} not found on ${cfg.owner}/${cfg.repo}@${cfg.branch}`)
+  throw new Error(`${res.status} ${res.statusText}`)
 }

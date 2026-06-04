@@ -179,7 +179,7 @@ function AdminUI({ onLogout }) {
       show('Connection OK')
     } catch (e) {
       setConnStatus({ text: '✗ ' + e.message, cls: 'text-red-400' })
-      show('Connection failed', 'err')
+      show('Connection failed: ' + e.message, 'err')
     }
   }
 
