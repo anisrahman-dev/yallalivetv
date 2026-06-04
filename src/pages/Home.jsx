@@ -6,6 +6,7 @@ import MatchCard from '../components/MatchCard.jsx'
 import RedirectModal from '../components/RedirectModal.jsx'
 import { loadMatches } from '../lib/matches.js'
 import { getSiteConfig } from '../lib/siteConfig.js'
+import { ARTICLES } from '../lib/articles.js'
 
 function injectSiteNavigationSchema(todayMatches) {
   const origin = window.location.origin
@@ -177,6 +178,37 @@ export default function Home() {
             </p>
           </section>
         </div>
+
+        <section className="mt-10" aria-labelledby="football-guides">
+          <div className="flex items-center justify-between gap-3 mb-4">
+            <h2 id="football-guides" className="text-lg md:text-xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+              Football Guides &amp; World Cup Blog
+            </h2>
+            <Link to="/blog.html" className="text-xs font-bold uppercase tracking-wider text-[#ee335f] hover:underline flex-shrink-0 inline-flex items-center gap-1">
+              View all
+              <span className="material-symbols-outlined text-base">arrow_forward</span>
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {ARTICLES.map((a) => (
+              <Link
+                key={a.slug}
+                to={a.slug}
+                className="group flex flex-col bg-white dark:bg-slate-900/40 border border-gray-200 dark:border-slate-800 rounded-2xl p-5 hover:border-[#ee335f] dark:hover:border-[#ee335f] hover:shadow-md transition-all"
+              >
+                <span className="inline-block self-start text-[10px] font-extrabold uppercase tracking-wider text-[#ee335f] bg-[#ee335f]/10 rounded-full px-2.5 py-1 mb-3">
+                  {a.category}
+                </span>
+                <h3 className="text-base md:text-lg font-bold text-gray-900 dark:text-white mb-2 leading-snug tracking-tight group-hover:text-[#ee335f] transition-colors">
+                  {a.title}
+                </h3>
+                <p className="text-sm text-gray-500 dark:text-slate-400 leading-relaxed">
+                  {a.excerpt}
+                </p>
+              </Link>
+            ))}
+          </div>
+        </section>
       </main>
 
       <section className="py-14 md:py-20 px-4 md:px-16 bg-[#f8fafc] dark:bg-[#0f172a] border-t border-gray-200 dark:border-gray-800">

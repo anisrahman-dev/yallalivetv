@@ -5,6 +5,7 @@ import Admin from './pages/Admin.jsx'
 import Contact from './pages/Contact.jsx'
 import Privacy from './pages/Privacy.jsx'
 import Terms from './pages/Terms.jsx'
+import Blog from './pages/Blog.jsx'
 import WorldCupFormatExplained from './pages/articles/WorldCupFormatExplained.jsx'
 import WorldCup2026 from './pages/articles/WorldCup2026.jsx'
 import FifaWorldCupHistory from './pages/articles/FifaWorldCupHistory.jsx'
@@ -41,6 +42,8 @@ export default function App() {
         <Route path="/contact.html" element={<Contact />} />
         <Route path="/privacy.html" element={<Privacy />} />
         <Route path="/terms.html" element={<Terms />} />
+
+        <Route path="/blog.html" element={<Blog />} />
 
         <Route path="/world-cup-format-explained.html" element={<WorldCupFormatExplained />} />
         <Route path="/world-cup-2026.html" element={<WorldCup2026 />} />

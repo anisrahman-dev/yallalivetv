@@ -19,6 +19,7 @@ export default function Footer() {
         </div>
         <div className="flex flex-col items-center md:items-end gap-6 md:gap-8">
           <nav className="flex flex-wrap justify-center md:justify-end gap-6 md:gap-8">
+            <Link to="/blog.html" className="text-gray-500 dark:text-slate-400 hover:text-primary transition-colors text-xs font-bold uppercase tracking-wider">Blog</Link>
             <Link to="/terms.html" className="text-gray-500 dark:text-slate-400 hover:text-primary transition-colors text-xs font-bold uppercase tracking-wider">Terms</Link>
             <Link to="/privacy.html" className="text-gray-500 dark:text-slate-400 hover:text-primary transition-colors text-xs font-bold uppercase tracking-wider">Privacy Policy</Link>
             <Link to="/contact.html" className="text-gray-500 dark:text-slate-400 hover:text-primary transition-colors text-xs font-bold uppercase tracking-wider">Contact</Link>
