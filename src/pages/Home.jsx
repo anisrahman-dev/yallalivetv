@@ -4,6 +4,8 @@ import Layout from '../components/Layout.jsx'
 import PageMeta from '../components/PageMeta.jsx'
 import MatchCard from '../components/MatchCard.jsx'
 import RedirectModal from '../components/RedirectModal.jsx'
+import AdUnit from '../components/AdUnit.jsx'
+import GutterAds from '../components/GutterAds.jsx'
 import { loadMatches } from '../lib/matches.js'
 import { getSiteConfig } from '../lib/siteConfig.js'
 import { ARTICLES } from '../lib/articles.js'
@@ -106,6 +108,8 @@ export default function Home() {
         ogDescription="Watch live soccer/football match online. It covers EPL, la liga, ucl and more."
       />
 
+      <GutterAds />
+
       <main className="pt-[176px] md:pt-[156px] pb-6 md:pb-16 max-w-[1000px] mx-auto min-h-screen px-4">
         <div className="mb-6">
           <h1 className="green-sub-bar shadow-sm block m-0">Yalla Live - Live Soccer TV HD Streaming</h1>
@@ -161,6 +165,11 @@ export default function Home() {
             ) : (
               visible.map((m) => <MatchCard key={m.id} match={m} onOpen={handleOpen} />)
             )}
+          </div>
+
+          <div className="mt-6 flex justify-center">
+            <AdUnit adKey="318cbafdeb9f624f0bf9a42881b6c70a" width={468} height={60} className="hidden sm:flex" />
+            <AdUnit adKey="b9358877b73e23101415bc0260a77523" width={300} height={250} className="flex sm:hidden" />
           </div>
 
           <section className="mt-8 bg-white dark:bg-slate-900/50 border border-gray-200 dark:border-slate-800 rounded-2xl p-5 md:p-7 shadow-sm" aria-labelledby="below-matches-intro">
