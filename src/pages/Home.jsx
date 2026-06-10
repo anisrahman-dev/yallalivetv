@@ -4,7 +4,6 @@ import Layout from '../components/Layout.jsx'
 import PageMeta from '../components/PageMeta.jsx'
 import MatchCard from '../components/MatchCard.jsx'
 import RedirectModal from '../components/RedirectModal.jsx'
-import GutterAds from '../components/GutterAds.jsx'
 import { loadMatches } from '../lib/matches.js'
 import { getSiteConfig } from '../lib/siteConfig.js'
 import { ARTICLES } from '../lib/articles.js'
@@ -106,8 +105,6 @@ export default function Home() {
         ogTitle="Yalla Live | Watch Live Football Streaming"
         ogDescription="Watch live soccer/football match online. It covers EPL, la liga, ucl and more."
       />
-
-      <GutterAds />
 
       <main className="pt-[176px] md:pt-[156px] pb-6 md:pb-16 max-w-[1000px] mx-auto min-h-screen px-4">
         <div className="mb-6">
