@@ -2,7 +2,7 @@ window.TV_CHANNELS = [
   {
     id: 1,
     title: "TV 1",
-    servers: ["http://l2.cloudskep.com/ant1cm2/abr/playlist.m3u8", "https://sc-kuzeykibrissmarttv.ercdn.net/brt2hd/bant1/playlist.m3u8", ""]
+    servers: ["https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/master.m3u8", "", ""]
   },
   {
     id: 2,
