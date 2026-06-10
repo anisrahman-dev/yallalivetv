@@ -2,7 +2,7 @@ window.TV_CHANNELS = [
   {
     id: 1,
     title: "TV 1",
-    servers: ["https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/master.m3u8", "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", "https://test-streams.mux.dev/test_001/stream.m3u8"]
+    servers: ["https://test-streams.mux.dev/test_001/stream.m3u8", "https://test-streams.mux.dev/test_001/stream.m3u8", "https://test-streams.mux.dev/test_001/stream.m3u8"]
   },
   {
     id: 2,
