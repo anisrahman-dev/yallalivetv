@@ -107,6 +107,8 @@ export default function HlsPlayer({ servers = [], title = '' }) {
           ref={videoRef}
           controls
           playsInline
+          autoPlay
+          muted
           poster=""
           className="absolute inset-0 w-full h-full"
         />

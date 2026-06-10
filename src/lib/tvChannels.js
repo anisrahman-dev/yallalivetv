@@ -27,7 +27,10 @@ export function normalizeChannels(arr) {
 }
 
 export function parseTvChannels(text) {
-  const m = text.match(/window\.TV_CHANNELS\s*=\s*(\[[\s\S]*?\])\s*;?\s*$/m)
+  // NOTE: greedy [\s\S]* (not *?) so we capture through the final ']' of the
+  // outer array. tv-channels.js writes `servers: [...]` as the last field with
+  // no trailing comma, so a non-greedy match would stop at channel 1's array.
+  const m = text.match(/window\.TV_CHANNELS\s*=\s*(\[[\s\S]*\])\s*;?\s*$/m)
   if (!m) throw new Error('Could not parse tv-channels.js — unexpected format')
   // eslint-disable-next-line no-new-func
   const arr = new Function('return ' + m[1])()
