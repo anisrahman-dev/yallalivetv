@@ -61,6 +61,16 @@ export default function TvChannel({ number }) {
           <h1 className="green-sub-bar shadow-sm block m-0">{title} — Live Stream</h1>
         </div>
 
+        {/* Top banner — 728x90 leaderboard (desktop) */}
+        <div className="hidden sm:flex justify-center mb-5">
+          <IframeAd html={AD_LEADERBOARD} width={728} height={90} />
+        </div>
+
+        {/* Top banner — 320x50 (mobile) */}
+        <div className="flex sm:hidden justify-center mb-5">
+          <IframeAd html={AD_MOBILE_BANNER} width={320} height={50} />
+        </div>
+
         <HlsPlayer servers={channel.servers} title={title} />
 
         {/* 728x90 leaderboard — desktop only (too wide for phones) */}
