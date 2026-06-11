@@ -4,9 +4,38 @@ import Layout from '../components/Layout.jsx'
 import PageMeta from '../components/PageMeta.jsx'
 import MatchCard from '../components/MatchCard.jsx'
 import RedirectModal from '../components/RedirectModal.jsx'
+import IframeAd from '../components/IframeAd.jsx'
 import { loadMatches } from '../lib/matches.js'
 import { getSiteConfig } from '../lib/siteConfig.js'
 import { ARTICLES } from '../lib/articles.js'
+
+// 728x90 leaderboard (Adsterra) — desktop
+const AD_LEADERBOARD = `
+<script type="text/javascript">
+  atOptions = { 'key':'26eba25e14e03d0c9c83a51f38af81c2','format':'iframe','height':90,'width':728,'params':{} };
+</script>
+<script type="text/javascript" src="https://www.highperformanceformat.com/26eba25e14e03d0c9c83a51f38af81c2/invoke.js"></script>`
+
+// 320x50 banner (Adsterra) — mobile
+const AD_MOBILE_BANNER = `
+<script type="text/javascript">
+  atOptions = { 'key':'1ff571e3b1f77fc6868d3228d5540a76','format':'iframe','height':50,'width':320,'params':{} };
+</script>
+<script type="text/javascript" src="https://www.highperformanceformat.com/1ff571e3b1f77fc6868d3228d5540a76/invoke.js"></script>`
+
+// Banner ad block — 728x90 on desktop, 320x50 on mobile. Reused top and mid-page.
+function HomeBannerAd({ className = '' }) {
+  return (
+    <>
+      <div className={`hidden sm:flex justify-center ${className}`}>
+        <IframeAd html={AD_LEADERBOARD} width={728} height={90} />
+      </div>
+      <div className={`flex sm:hidden justify-center ${className}`}>
+        <IframeAd html={AD_MOBILE_BANNER} width={320} height={50} />
+      </div>
+    </>
+  )
+}
 
 function injectSiteNavigationSchema(todayMatches) {
   const origin = window.location.origin
@@ -111,6 +140,8 @@ export default function Home() {
           <h1 className="green-sub-bar shadow-sm block m-0">Yalla Live - Live Soccer TV HD Streaming</h1>
         </div>
 
+        {config.adsEnabled && <HomeBannerAd className="mb-6" />}
+
         <section className="mb-8 bg-white dark:bg-slate-900/50 border border-gray-200 dark:border-slate-800 rounded-2xl p-5 md:p-7 shadow-sm" aria-labelledby="about-yalla-live">
           <h2 id="about-yalla-live" className="text-lg md:text-xl font-extrabold text-gray-900 dark:text-white mb-3 tracking-tight">
             Watch Live Football Streams Online — Free, HD, Mobile-Ready
@@ -162,6 +193,8 @@ export default function Home() {
               visible.map((m) => <MatchCard key={m.id} match={m} onOpen={handleOpen} />)
             )}
           </div>
+
+          {config.adsEnabled && <HomeBannerAd className="mt-8" />}
 
           <section className="mt-8 bg-white dark:bg-slate-900/50 border border-gray-200 dark:border-slate-800 rounded-2xl p-5 md:p-7 shadow-sm" aria-labelledby="below-matches-intro">
             <h2 id="below-matches-intro" className="text-lg md:text-xl font-extrabold text-gray-900 dark:text-white mb-3 tracking-tight">
