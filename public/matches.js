@@ -23,7 +23,7 @@ const MATCHES_DATA = [
     status: "",
     day: "today",
     isImportant: true,
-    servers: ["https://www.yallalivefootball.com/tv-2.html"],
+    servers: ["https://www.score808live.tv/"],
     homeTeam: {
       name: "South Korea",
       logo: "logos/south-korea.png"
