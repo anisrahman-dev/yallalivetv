@@ -76,7 +76,7 @@ const LIGUE1_TEAMS = [
 const WORLD_CUP_2026_TEAMS = [
   'USA', 'Canada', 'Mexico',
   'Spain', 'France', 'England', 'Germany', 'Italy', 'Portugal', 'Netherlands', 'Belgium',
-  'Croatia', 'Switzerland', 'Denmark', 'Poland', 'Austria', 'Czech Republic', 'Turkey', 'Serbia',
+  'Croatia', 'Switzerland', 'Denmark', 'Poland', 'Austria', 'Czech Republic', 'Turkey', 'Serbia', 'Bosnia and Herzegovina',
   'Argentina', 'Brazil', 'Uruguay', 'Colombia', 'Ecuador', 'Paraguay',
   'Morocco', 'Senegal', 'Tunisia', 'Algeria', 'Egypt', 'Cameroon', 'Nigeria', 'Ivory Coast', 'Ghana', 'South Africa',
   'Japan', 'South Korea', 'Iran', 'Saudi Arabia', 'Australia', 'Iraq', 'United Arab Emirates', 'Qatar',
@@ -121,7 +121,8 @@ export const TEAM_LOGOS = {
   'Netherlands': 'logos/netherlands.png', 'Belgium': 'logos/belgium.png', 'Croatia': 'logos/croatia.png',
   'Switzerland': 'logos/switzerland.png', 'Denmark': 'logos/denmark.png', 'Poland': 'logos/poland.png',
   'Austria': 'logos/austria.png', 'Czech Republic': 'logos/czech-republic.png', 'Turkey': 'logos/turkey.png',
-  'Serbia': 'logos/serbia.png', 'Argentina': 'logos/argentina.png', 'Brazil': 'logos/brazil.png',
+  'Serbia': 'logos/serbia.png', 'Bosnia and Herzegovina': 'logos/bosnia-and-herzegovina.png',
+  'Argentina': 'logos/argentina.png', 'Brazil': 'logos/brazil.png',
   'Uruguay': 'logos/uruguay.png', 'Colombia': 'logos/colombia.png', 'Ecuador': 'logos/ecuador.png',
   'Paraguay': 'logos/paraguay.png', 'Morocco': 'logos/morocco.png', 'Senegal': 'logos/senegal.png',
   'Tunisia': 'logos/tunisia.png', 'Algeria': 'logos/algeria.png', 'Egypt': 'logos/egypt.png',
