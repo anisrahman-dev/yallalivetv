@@ -1,5 +1,5 @@
 window.SITE_CONFIG = {
-  "adsEnabled": true,
+  "adsEnabled": false,
   "vignetteEnabled": true,
   "multiAdEnabled": true,
   "popUnderEnabled": true,
