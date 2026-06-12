@@ -6,7 +6,6 @@ import GutterAds from '../components/GutterAds.jsx'
 import IframeAd from '../components/IframeAd.jsx'
 import { loadTvChannels, blankChannel } from '../lib/tvChannels.js'
 import { getSiteConfig } from '../lib/siteConfig.js'
-import { isAdFree } from '../lib/adFree.js'
 
 // 728x90 leaderboard (Adsterra) — desktop
 const AD_LEADERBOARD = `
@@ -28,7 +27,8 @@ const AD_NATIVE = `
 <div id="container-53ad722048fcb45c6570dc61ee07464f"></div>`
 
 // One TV page = one HLS player fed by up to 3 admin-configured m3u8 servers.
-export default function TvChannel({ number }) {
+// appMode = the mobile-app variant (/tv-N-app.html): always ad-free.
+export default function TvChannel({ number, appMode = false }) {
   const [channel, setChannel] = useState(() => blankChannel(number))
 
   useEffect(() => {
@@ -45,8 +45,8 @@ export default function TvChannel({ number }) {
 
   const title = channel.title || `TV ${number}`
   const cfg = getSiteConfig()
-  // When reached from the internal board (?board=1), hide every ad on this page.
-  const adFree = isAdFree()
+  // App pages (/tv-N-app.html) are always ad-free; web pages keep their ads.
+  const adFree = appMode
   const showBannerAds = cfg.tvBannerAdsEnabled && !adFree
   const showNativeAd = cfg.tvNativeAdEnabled && !adFree
 

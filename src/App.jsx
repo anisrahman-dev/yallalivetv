@@ -58,6 +58,13 @@ export default function App() {
         <Route path="/tv-4.html" element={<TvChannel number={4} />} />
         <Route path="/tv-5.html" element={<TvChannel number={5} />} />
 
+        {/* Ad-free variants embedded in the mobile app */}
+        <Route path="/tv-1-app.html" element={<TvChannel number={1} appMode />} />
+        <Route path="/tv-2-app.html" element={<TvChannel number={2} appMode />} />
+        <Route path="/tv-3-app.html" element={<TvChannel number={3} appMode />} />
+        <Route path="/tv-4-app.html" element={<TvChannel number={4} appMode />} />
+        <Route path="/tv-5-app.html" element={<TvChannel number={5} appMode />} />
+
         <Route path="/world-cup-format-explained.html" element={<WorldCupFormatExplained />} />
         <Route path="/world-cup-2026.html" element={<WorldCup2026 />} />
         <Route path="/fifa-world-cup-history.html" element={<FifaWorldCupHistory />} />
