@@ -2,7 +2,7 @@ window.TV_CHANNELS = [
   {
     id: 1,
     title: "TV 1",
-    servers: ["https://serspurgg.cachefly.net/bri/strr.stream/playlist.m3u8", "https://reemleg.cachefly.net/lall/score.stream/playlist.m3u8", "https://serspurgg.cachefly.net/bri/strr.stream/playlist.m3u8"]
+    servers: ["https://plu002.myturn1.top:8088/live/webcricfifa1/playlist.m3u8?vidictid=206162030144&id=124249&pk=b69ee33acba9b950d6bb47458b3b3438f58ff512b2106af2cbaf6583e26dd38dbcdf10f5169624aa5fb5f0b2035c0a31dabe2add529e727b6fb476a6f3b94920", "https://plu002.myturn1.top:8088/live/webcricfifa1/playlist.m3u8?vidictid=206162030144&id=124249&pk=b69ee33acba9b950d6bb47458b3b3438f58ff512b2106af2cbaf6583e26dd38dbcdf10f5169624aa5fb5f0b2035c0a31dabe2add529e727b6fb476a6f3b94920", "https://plu002.myturn1.top:8088/live/webcricfifa1/playlist.m3u8?vidictid=206162030144&id=124249&pk=b69ee33acba9b950d6bb47458b3b3438f58ff512b2106af2cbaf6583e26dd38dbcdf10f5169624aa5fb5f0b2035c0a31dabe2add529e727b6fb476a6f3b94920"]
   },
   {
     id: 2,
