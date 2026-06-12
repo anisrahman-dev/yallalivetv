@@ -6,6 +6,7 @@ import GutterAds from '../components/GutterAds.jsx'
 import IframeAd from '../components/IframeAd.jsx'
 import { loadTvChannels, blankChannel } from '../lib/tvChannels.js'
 import { getSiteConfig } from '../lib/siteConfig.js'
+import { isAdFree } from '../lib/adFree.js'
 
 // 728x90 leaderboard (Adsterra) — desktop
 const AD_LEADERBOARD = `
@@ -44,6 +45,10 @@ export default function TvChannel({ number }) {
 
   const title = channel.title || `TV ${number}`
   const cfg = getSiteConfig()
+  // When reached from the internal board (?board=1), hide every ad on this page.
+  const adFree = isAdFree()
+  const showBannerAds = cfg.tvBannerAdsEnabled && !adFree
+  const showNativeAd = cfg.tvNativeAdEnabled && !adFree
 
   return (
     <Layout>
@@ -56,14 +61,14 @@ export default function TvChannel({ number }) {
         robots="noindex, nofollow"
       />
 
-      <GutterAds />
+      {!adFree && <GutterAds />}
 
       <main className="pt-[100px] md:pt-[96px] pb-10 md:pb-16 max-w-[1000px] mx-auto min-h-screen px-4">
         <div className="mb-5">
           <h1 className="green-sub-bar shadow-sm block m-0">{title} — Live Stream</h1>
         </div>
 
-        {cfg.tvBannerAdsEnabled && (
+        {showBannerAds && (
           <>
             {/* Top banner — 728x90 leaderboard (desktop) */}
             <div className="hidden sm:flex justify-center mb-5">
@@ -78,7 +83,7 @@ export default function TvChannel({ number }) {
 
         <HlsPlayer servers={channel.servers} title={title} />
 
-        {cfg.tvBannerAdsEnabled && (
+        {showBannerAds && (
           <>
             {/* 728x90 leaderboard — desktop only (too wide for phones) */}
             <div className="hidden sm:flex justify-center mt-6">
@@ -92,7 +97,7 @@ export default function TvChannel({ number }) {
         )}
 
         {/* Native banner — all screens */}
-        {cfg.tvNativeAdEnabled && (
+        {showNativeAd && (
           <div className="flex justify-center mt-6">
             <IframeAd html={AD_NATIVE} width={728} height={300} responsive />
           </div>

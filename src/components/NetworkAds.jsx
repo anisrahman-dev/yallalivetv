@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { getSiteConfig } from '../lib/siteConfig.js'
+import { isAdFree } from '../lib/adFree.js'
 
 /**
  * Site-wide background ad network tags (effectiveCPMnetwork + nap5k).
@@ -12,6 +13,7 @@ export default function NetworkAds() {
     // Never inject network ad tags on internal/ad-free pages.
     const p = window.location.pathname
     if (p.startsWith('/admin-anis') || p.startsWith('/matches-board-anis')) return
+    if (isAdFree()) return
     if (!getSiteConfig().networkTagsEnabled) return
 
     if (!document.getElementById('net-ad-effectivecpm')) {
