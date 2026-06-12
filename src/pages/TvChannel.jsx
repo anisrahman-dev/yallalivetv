@@ -51,7 +51,7 @@ export default function TvChannel({ number, appMode = false }) {
   const showNativeAd = cfg.tvNativeAdEnabled && !adFree
 
   return (
-    <Layout>
+    <Layout bare={appMode}>
       <PageMeta
         title={`${title} — Live TV | Yalla Live`}
         description={`Watch ${title} live stream in HD on Yalla Live. Switch between multiple servers for the smoothest football broadcast.`}
@@ -63,7 +63,7 @@ export default function TvChannel({ number, appMode = false }) {
 
       {!adFree && <GutterAds />}
 
-      <main className="pt-[100px] md:pt-[96px] pb-10 md:pb-16 max-w-[1000px] mx-auto min-h-screen px-4">
+      <main className={`${appMode ? 'pt-6 md:pt-8' : 'pt-[100px] md:pt-[96px]'} pb-10 md:pb-16 max-w-[1000px] mx-auto min-h-screen px-4`}>
         <div className="mb-5">
           <h1 className="green-sub-bar shadow-sm block m-0">{title} — Live Stream</h1>
         </div>
