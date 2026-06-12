@@ -11,7 +11,7 @@ export default function NetworkAds() {
   useEffect(() => {
     // Never inject network ad tags on internal/ad-free pages.
     const p = window.location.pathname
-    if (p.startsWith('/admin-anis') || p.startsWith('/matches-board-anis') || p === '/tv.html') return
+    if (p.startsWith('/admin-anis') || p.startsWith('/matches-board-anis')) return
     if (!getSiteConfig().networkTagsEnabled) return
 
     if (!document.getElementById('net-ad-effectivecpm')) {
