@@ -2,7 +2,7 @@ window.TV_CHANNELS = [
   {
     id: 1,
     title: "TV 1",
-    servers: ["https://s3.us-east-1.amazonaws.com/yalapro1/hls/0/stream_640x360_800k.m3u8", "https://s3.us-east-1.amazonaws.com/yalapro1/hls/0/stream_640x360_800k.m3u8", "https://s3.us-east-1.amazonaws.com/yalapro1/hls/0/stream_640x360_800k.m3u8"]
+    servers: ["https://s3.us-east-2.amazonaws.com/yalaproo2/hls/0/stream_640x360_800k.m3u8", "https://s3.us-east-2.amazonaws.com/yalaproo2/hls/0/stream_640x360_800k.m3u8", "https://s3.us-east-2.amazonaws.com/yalaproo2/hls/0/stream_640x360_800k.m3u8"]
   },
   {
     id: 2,
