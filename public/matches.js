@@ -2,35 +2,35 @@ const MATCHES_DATA = [
   {
     id: 1,
     league: "FIFA World Cup 2026",
-    time: "1:00 AM",
+    time: "4:00 AM",
     status: "",
     day: "today",
     isImportant: true,
-    servers: ["https://www.yallalivefootball.com/tv-1.html"],
+    servers: ["https://yallalivefootball.com/"],
     homeTeam: {
-      name: "Canada",
-      logo: "logos/canada.png"
+      name: "Brazil",
+      logo: "logos/brazil.png"
     },
     awayTeam: {
-      name: "Bosnia and Herzegovina",
-      logo: "logos/bosnia-and-herzegovina.png"
+      name: "Morocco",
+      logo: "logos/morocco.png"
     }
   },
   {
     id: 2,
     league: "FIFA World Cup 2026",
-    time: "7:00 AM",
+    time: "11:00 PM",
     status: "",
     day: "today",
     isImportant: true,
-    servers: ["https://www.yallalivefootball.com/tv-2.html"],
+    servers: ["https://yallalivefootball.com/"],
     homeTeam: {
-      name: "USA",
-      logo: "logos/usa.png"
+      name: "Germany",
+      logo: "logos/germany.png"
     },
     awayTeam: {
-      name: "Paraguay",
-      logo: "logos/paraguay.png"
+      name: "Ecuador",
+      logo: "logos/ecuador.png"
     }
   }
 ];
