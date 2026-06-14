@@ -2,7 +2,7 @@ window.TV_CHANNELS = [
   {
     id: 1,
     title: "TV 1",
-    servers: ["https://live.kooran8.cfd/livea1/index.m3u8", "https://s3.us-east-2.amazonaws.com/yalaproo2/hls/0/stream_640x360_800k.m3u8", "https://live.kooran8.cfd/livea1/index.m3u8"]
+    servers: ["https://s3.us-east-2.amazonaws.com/yalapro5/hls/0/stream_640x360_800k.m3u8", "https://s3.us-east-2.amazonaws.com/yalapro5/hls/0/stream_640x360_800k.m3u8", "https://s3.us-east-2.amazonaws.com/yalapro5/hls/0/stream_640x360_800k.m3u8"]
   },
   {
     id: 2,
