@@ -1,4 +1,4 @@
 User-agent: *
-Disallow: /admin-anis.html
+Allow: /
 
-Sitemap: https://www.yallalivefootball.com/sitemap.xml
+Sitemap: https://www.yallalivetv.site/sitemap.xml

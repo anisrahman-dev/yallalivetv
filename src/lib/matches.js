@@ -1,11 +1,10 @@
-// Loader for the runtime matches.js file in /public — same file the
-// original site loads via <script src="matches.js"></script>. We hit
-// the same URL so the admin can keep editing it on GitHub.
+// This is the standalone Yalla Live TV app. It has no match data of its own —
+// it reads the live feed (and team logos) from the main Yalla Live Football
+// site, so whatever the admin publishes there shows up here automatically.
+export const FOOT_ORIGIN = 'https://www.yallalivefootball.com'
 
-// base = '' loads this site's own /matches.js; pass an absolute origin
-// (e.g. the main .com) to let a landing domain reuse the same feed.
-export async function loadMatches(base = '') {
-  const res = await fetch(`${base}/matches.js`, { cache: 'no-store' })
+export async function loadMatches() {
+  const res = await fetch(`${FOOT_ORIGIN}/matches.js`, { cache: 'no-store' })
   if (!res.ok) throw new Error(`Failed to fetch matches.js: ${res.status}`)
   const text = await res.text()
   const m = text.match(/const\s+MATCHES_DATA\s*=\s*(\[[\s\S]*?\]);?\s*$/m)

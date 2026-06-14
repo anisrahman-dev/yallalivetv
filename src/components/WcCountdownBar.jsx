@@ -42,7 +42,7 @@ export default function WcCountdownBar() {
       {GROUPS.map((g) => (
         <span key={g.id}>
           {g.text}
-          <span className="text-[#fac912]/60 ml-2">✦</span>
+          <span className="text-[#22d3ee]/60 ml-2">✦</span>
         </span>
       ))}
     </>
@@ -51,16 +51,16 @@ export default function WcCountdownBar() {
   return (
     <div className="wc-countdown-bar fixed top-0 left-0 right-0 w-full z-50 h-[76px] md:h-[56px] py-1.5 md:py-0 text-white flex flex-col md:flex-row items-center justify-center md:justify-between px-3 md:px-4 select-none overflow-hidden font-sora gap-1 md:gap-0">
       <div className="flex items-center justify-center md:justify-start gap-2 flex-shrink-0 w-full md:w-auto">
-        <span className="inline-flex items-center justify-center bg-gradient-to-r from-[#ee335f] to-[#ff5d84] text-white px-2 py-0.5 md:px-2.5 md:py-1 rounded text-[9px] md:text-xs font-black tracking-wider uppercase animate-pulse shadow-sm shadow-[#ee335f]/30">
+        <span className="inline-flex items-center justify-center bg-gradient-to-r from-[#2563eb] to-[#ff5d84] text-white px-2 py-0.5 md:px-2.5 md:py-1 rounded text-[9px] md:text-xs font-black tracking-wider uppercase animate-pulse shadow-sm shadow-[#2563eb]/30">
           WC 2026
         </span>
-        <span id="wc-timer" className="font-extrabold text-[#fac912] font-mono tracking-widest text-[12px] sm:text-sm md:text-base lg:text-lg tabular-nums">
+        <span id="wc-timer" className="font-extrabold text-[#22d3ee] font-mono tracking-widest text-[12px] sm:text-sm md:text-base lg:text-lg tabular-nums">
           {timer ? (
             <>
               {timer.d}D <span className="text-slate-500">:</span> {timer.h}H <span className="text-slate-500">:</span> {timer.m}M <span className="text-slate-500">:</span> {timer.s}S
             </>
           ) : (
-            <span className="text-[#ee335f]">KICKOFF!</span>
+            <span className="text-[#2563eb]">KICKOFF!</span>
           )}
         </span>
       </div>

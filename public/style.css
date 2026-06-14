@@ -107,14 +107,14 @@ nav a { justify-content: center; }
 .tab-yesterday { background-color: #104e8b; color: #ffffff; }
 .tab-yesterday:hover { background-color: #0d3d6e; }
 .tab-important { 
-  background-color: #ee335f; 
+  background-color: #2563eb; 
   color: #ffffff; 
-  border: 1px solid #ee335f;
+  border: 1px solid #2563eb;
   transition: all 0.2s ease;
 }
 .tab-important:hover { 
-  background-color: #d1224d; 
-  border-color: #fac912;
+  background-color: #1d4ed8; 
+  border-color: #22d3ee;
 }
 
 /* ── CUSTOM MATCH CARD DESIGN ── */
@@ -156,7 +156,7 @@ nav a { justify-content: center; }
 
 .match-info-badge {
   background-color: rgba(238, 51, 95, 0.12);
-  color: #ee335f;
+  color: #2563eb;
   border: 1px solid rgba(238, 51, 95, 0.3);
   font-size: 11px;
   font-weight: 700;
@@ -190,14 +190,14 @@ nav a { justify-content: center; }
 
 /* ── PREMIUM RED & YELLOW SUB BAR ── */
 .green-sub-bar {
-  background: linear-gradient(135deg, #ee335f 0%, #c1173f 100%);
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
   color: #ffffff;
   font-weight: 700;
   font-size: 13px;
   text-align: center;
   padding: 10px 16px;
   border-radius: 6px;
-  border-bottom: 2px solid #fac912;
+  border-bottom: 2px solid #22d3ee;
   box-shadow: 0 4px 12px rgba(238, 51, 95, 0.15);
 }
 

@@ -7,7 +7,7 @@ export default function Header({ withWcBar = false }) {
     ? 'fixed top-[76px] md:top-[56px] w-full z-50'
     : 'fixed top-0 w-full z-50'
   return (
-    <header className={`${topClass} border-b border-[#ee335f]/20 bg-white/95 dark:bg-slate-900/95 backdrop-blur shadow-sm`}>
+    <header className={`${topClass} border-b border-[#2563eb]/20 bg-white/95 dark:bg-slate-900/95 backdrop-blur shadow-sm`}>
       <div className="flex justify-between items-center px-4 md:px-8 py-0 w-full max-w-[1200px] mx-auto h-[80px]">
         <Link to="/" className="h-full flex items-center select-none hover:opacity-90 transition-opacity">
           <img src="/logos/logo-unified.png" alt="Yalla Live" className="h-[70px] md:h-[72px] w-auto object-contain" />

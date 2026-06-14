@@ -7,25 +7,23 @@ export default function Footer() {
         <div className="flex flex-col items-center md:items-start gap-4 max-w-sm">
           <img
             src="/logos/logo-unified.png"
-            alt="Yalla Live Logo"
+            alt="Yalla Live TV Logo"
             className="h-14 md:h-16 w-auto object-contain select-none pointer-events-none"
           />
           <p className="text-[11px] text-gray-500 dark:text-slate-400 text-center md:text-left leading-relaxed">
-            Your ultimate destination for <strong>Yalla Live</strong>,
-            <strong> Yalla Shoot</strong>, <strong>Koora Live</strong>,
-            <strong> Yalla Koora</strong> &amp;
-            <strong> Yalla Shoot TV</strong> football live match streams and real-time scores.
+            <strong>Yalla Live TV</strong> — watch live football on any screen.
+            Today’s <strong>Yalla Shoot TV</strong> &amp; <strong>Koora Live TV</strong>
+            match streams, schedules and real-time scores in one place.
           </p>
         </div>
         <div className="flex flex-col items-center md:items-end gap-6 md:gap-8">
           <nav className="flex flex-wrap justify-center md:justify-end gap-6 md:gap-8">
-            <Link to="/blog.html" className="text-gray-500 dark:text-slate-400 hover:text-primary transition-colors text-xs font-bold uppercase tracking-wider">Blog</Link>
             <Link to="/terms.html" className="text-gray-500 dark:text-slate-400 hover:text-primary transition-colors text-xs font-bold uppercase tracking-wider">Terms</Link>
             <Link to="/privacy.html" className="text-gray-500 dark:text-slate-400 hover:text-primary transition-colors text-xs font-bold uppercase tracking-wider">Privacy Policy</Link>
             <Link to="/contact.html" className="text-gray-500 dark:text-slate-400 hover:text-primary transition-colors text-xs font-bold uppercase tracking-wider">Contact</Link>
           </nav>
           <div className="text-gray-400 dark:text-slate-500 text-[10px] font-bold tracking-widest text-center md:text-right">
-            © 2026 YALLA LIVE. ALL RIGHTS RESERVED.
+            © 2026 YALLA LIVE TV. ALL RIGHTS RESERVED.
           </div>
         </div>
       </div>

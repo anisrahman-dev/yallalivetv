@@ -26,7 +26,7 @@ export default function Contact() {
 
   return (
     <Layout>
-      <PageMeta title="Contact – Yalla Live" />
+      <PageMeta title="Contact – Yalla Live TV" />
       <main className="pt-[110px] pb-16 max-w-[800px] mx-auto min-h-screen px-4">
         <div className="bg-white/80 dark:bg-slate-800/80 border border-gray-200 dark:border-slate-700/50 rounded-2xl shadow-xl p-6 md:p-8 mb-8 backdrop-blur-md">
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-primary mb-3">
@@ -40,9 +40,9 @@ export default function Contact() {
 
         <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
           <div className="md:col-span-2 space-y-4">
-            <ContactCard color="#ee335f" iconBg="bg-[#ee335f]/10" icon="mail" title="General Support" sub="support@yallalive.com" />
-            <ContactCard color="#fac912" iconBg="bg-[#fac912]/10" icon="campaign" title="Advertising Inquiries" sub="ads@yallalive.com" />
-            <ContactCard color="green-500" iconBg="bg-green-500/10" icon="forum" title="Join Telegram Chat" sub="t.me/yallalive_official" />
+            <ContactCard color="#2563eb" iconBg="bg-[#2563eb]/10" icon="mail" title="General Support" sub="support@yallalivetv.site" />
+            <ContactCard color="#22d3ee" iconBg="bg-[#22d3ee]/10" icon="campaign" title="Advertising Inquiries" sub="ads@yallalivetv.site" />
+            <ContactCard color="green-500" iconBg="bg-green-500/10" icon="forum" title="Join Telegram Chat" sub="t.me/yallalivetv" />
           </div>
 
           <div className="md:col-span-3">
@@ -54,9 +54,9 @@ export default function Contact() {
                   </div>
                   <h3 className="text-xl font-extrabold text-gray-900 dark:text-white">Message Sent!</h3>
                   <p className="text-xs md:text-sm text-gray-500 dark:text-slate-400 max-w-xs">
-                    Thank you for reaching out. The Yalla Live team will review your inquiry and get back to you shortly.
+                    Thank you for reaching out. The Yalla Live TV team will review your inquiry and get back to you shortly.
                   </p>
-                  <button onClick={reset} className="bg-[#ee335f] hover:bg-[#d1224d] text-white font-bold py-2 px-6 rounded-xl shadow-md transition-all text-xs">
+                  <button onClick={reset} className="bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-bold py-2 px-6 rounded-xl shadow-md transition-all text-xs">
                     Send Another Message
                   </button>
                 </div>
@@ -69,9 +69,9 @@ export default function Contact() {
                 <div>
                   <label htmlFor="message" className="block text-xs font-bold text-gray-700 dark:text-slate-300 uppercase tracking-wider mb-1">Message</label>
                   <textarea id="message" rows="4" required value={form.message} onChange={onChange('message')} placeholder="Type your message here..."
-                    className="w-full bg-gray-50 dark:bg-slate-950 border border-gray-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#ee335f] focus:border-transparent transition-all resize-none" />
+                    className="w-full bg-gray-50 dark:bg-slate-950 border border-gray-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#2563eb] focus:border-transparent transition-all resize-none" />
                 </div>
-                <button type="submit" className="w-full bg-[#ee335f] hover:bg-[#d1224d] text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-2 select-none mt-2">
+                <button type="submit" className="w-full bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-2 select-none mt-2">
                   <span className="material-symbols-outlined text-sm">send</span>
                   Submit Message
                 </button>
@@ -89,7 +89,7 @@ function Field({ label, id, type = 'text', value, onChange, placeholder }) {
     <div>
       <label htmlFor={id} className="block text-xs font-bold text-gray-700 dark:text-slate-300 uppercase tracking-wider mb-1">{label}</label>
       <input type={type} id={id} required value={value} onChange={onChange} placeholder={placeholder}
-        className="w-full bg-gray-50 dark:bg-slate-950 border border-gray-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#ee335f] focus:border-transparent transition-all" />
+        className="w-full bg-gray-50 dark:bg-slate-950 border border-gray-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#2563eb] focus:border-transparent transition-all" />
     </div>
   )
 }
