@@ -11,22 +11,22 @@ import { getSiteConfig } from '../lib/siteConfig.js'
 export default function GutterAds() {
   if (!getSiteConfig().adsEnabled) return null
 
-  const column = (
-    <>
+  const grid = (
+    <div className="grid grid-cols-2 gap-4">
       <AdUnit adKey="ec2e4b0a2aa3fcac5cb428225d0ad9a1" width={160} height={600} showLabel={false} />
       <AdUnit adKey="ec2e4b0a2aa3fcac5cb428225d0ad9a1" width={160} height={600} showLabel={false} />
       <AdUnit adKey="ec2e4b0a2aa3fcac5cb428225d0ad9a1" width={160} height={600} showLabel={false} />
       <AdUnit adKey="ec2e4b0a2aa3fcac5cb428225d0ad9a1" width={160} height={600} showLabel={false} />
-    </>
+    </div>
   )
 
   return (
     <>
-      <div className="hidden min-[1400px]:flex flex-col gap-4 absolute top-[170px] left-[calc(50%_-_680px)] z-40">
-        {column}
+      <div className="hidden min-[1740px]:block absolute top-[170px] left-[calc(50%_-_840px)] z-40">
+        {grid}
       </div>
-      <div className="hidden min-[1400px]:flex flex-col gap-4 absolute top-[170px] right-[calc(50%_-_680px)] z-40">
-        {column}
+      <div className="hidden min-[1740px]:block absolute top-[170px] right-[calc(50%_-_840px)] z-40">
+        {grid}
       </div>
     </>
   )
