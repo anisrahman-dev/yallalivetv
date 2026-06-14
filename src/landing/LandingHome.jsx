@@ -7,6 +7,55 @@ import LandingGutterAds from './LandingGutterAds.jsx'
 import { loadMatches } from '../lib/matches.js'
 import { MAIN_ORIGIN } from '../lib/domains.js'
 
+// Mirrors the main site's structured data (WebSite + ItemList navigation),
+// branded for this landing domain. Helps Google build sitelinks from today's
+// matches and recognise each .site as its own distinct site.
+function injectLandingSchema(cfg, todayMatches) {
+  const origin = window.location.origin
+  const navElements = todayMatches.slice(0, 4).map((m, idx) => ({
+    '@type': 'SiteNavigationElement',
+    position: idx + 1,
+    name: `${m.homeTeam.name} vs ${m.awayTeam.name} Live`,
+    description: `Watch today's live stream of ${m.homeTeam.name} vs ${m.awayTeam.name} on ${cfg.brand}. Real-time links and scores.`,
+    url: `${origin}/#match-${m.id}`
+  }))
+  if (navElements.length === 0) {
+    navElements.push({
+      '@type': 'SiteNavigationElement',
+      position: 1,
+      name: 'Live Football Schedule Today',
+      description: `Watch free live streaming of today's most important matches on ${cfg.brand}.`,
+      url: `${origin}/`
+    })
+  }
+  const schema = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'WebSite',
+        '@id': `${origin}/#website`,
+        url: origin,
+        name: cfg.brand,
+        description: cfg.subhead,
+        publisher: { '@type': 'Organization', name: cfg.brand, url: origin }
+      },
+      {
+        '@type': 'ItemList',
+        '@id': `${origin}/#navigation`,
+        name: "Today's Live Football Match Sitelinks",
+        itemListElement: navElements
+      }
+    ]
+  }
+  const id = 'landing-seo-schema'
+  document.getElementById(id)?.remove()
+  const script = document.createElement('script')
+  script.id = id
+  script.type = 'application/ld+json'
+  script.text = JSON.stringify(schema)
+  document.head.appendChild(script)
+}
+
 export default function LandingHome({ cfg }) {
   const [matches, setMatches] = useState([])
   const [tab, setTab] = useState('today')
@@ -21,6 +70,16 @@ export default function LandingHome({ cfg }) {
     if (tab === 'today') return matches.filter((m) => m.day === 'today')
     return matches.filter((m) => m.day === tab)
   }, [tab, matches])
+
+  const todayImportant = useMemo(
+    () => matches.filter((m) => m.day === 'today' && m.isImportant),
+    [matches]
+  )
+
+  useEffect(() => {
+    if (matches.length === 0) return
+    injectLandingSchema(cfg, todayImportant)
+  }, [cfg, matches, todayImportant])
 
   const emptyMessage =
     tab === 'tomorrow' ? 'There is no match tomorrow.'
@@ -41,9 +100,16 @@ export default function LandingHome({ cfg }) {
       <PageMeta
         title={`${cfg.brand} | ${cfg.headline}`}
         description={cfg.subhead}
-        keywords={`${cfg.brand}, live football, football streaming, live scores, match schedule`}
+        keywords={cfg.keywords || `${cfg.brand}, live football, football streaming, live scores, match schedule`}
+        robots="index, follow"
         ogTitle={`${cfg.brand} | ${cfg.headline}`}
         ogDescription={cfg.subhead}
+        ogType="website"
+        ogUrl={typeof window !== 'undefined' ? window.location.origin + '/' : undefined}
+        twitterCard="summary_large_image"
+        twitterTitle={`${cfg.brand} | ${cfg.headline}`}
+        twitterDescription={cfg.subhead}
+        googleVerification={cfg.googleVerification}
       />
 
       {/* Hero */}

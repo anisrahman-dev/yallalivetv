@@ -46,6 +46,9 @@ const LANDINGS = {
       'We cover the Premier League, La Liga, Serie A, Bundesliga, Ligue 1 and the major cup competitions — indexed alongside the headline matches of the day.'
     ],
     email: 'contact@yallalivetv.site',
+    keywords:
+      'Yalla Live TV, yalla tv, live football tv, watch football live, live soccer tv, yalla shoot tv, koora live tv, football live streaming, live scores, match schedule',
+    googleVerification: '_j09CdaJOX1YAM5O-71kY7VqT7v13usoGYLPHaGFM6s',
     // 160x600 skyscraper (Adsterra) shown in the side gutters on this domain only.
     skyscraperAdKey: 'cfd2caecdbd518ae79309dd444c23be7'
   }
