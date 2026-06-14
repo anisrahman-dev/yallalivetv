@@ -108,7 +108,6 @@ export default function LandingHome({ cfg }) {
         twitterCard="summary_large_image"
         twitterTitle={`${cfg.brand} | ${cfg.headline}`}
         twitterDescription={cfg.subhead}
-        googleVerification={cfg.googleVerification}
       />
 
       {/* Content wrapper — relative anchor for the gutter ads. min-height on

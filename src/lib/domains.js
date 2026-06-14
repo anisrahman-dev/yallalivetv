@@ -48,7 +48,8 @@ const LANDINGS = {
     email: 'contact@yallalivetv.site',
     keywords:
       'Yalla Live TV, yalla tv, live football tv, watch football live, live soccer tv, yalla shoot tv, koora live tv, football live streaming, live scores, match schedule',
-    googleVerification: '_j09CdaJOX1YAM5O-71kY7VqT7v13usoGYLPHaGFM6s',
+    // GSC verification token lives as a static <meta> in index.html (Google's
+    // verifier reads raw HTML, not JS-injected tags).
     // 160x600 skyscraper (Adsterra) shown in the side gutters on this domain only.
     skyscraperAdKey: 'cfd2caecdbd518ae79309dd444c23be7'
   }
