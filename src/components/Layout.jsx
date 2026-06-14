@@ -1,10 +1,9 @@
 import WcCountdownBar from './WcCountdownBar.jsx'
 import Header from './Header.jsx'
 import Footer from './Footer.jsx'
-import VignetteAd from './VignetteAd.jsx'
 
 export default function Layout({ children, withWcBar = false, bare = false }) {
-  // bare = internal pages with no chrome (header/footer) and no ads.
+  // bare = internal pages with no chrome (header/footer).
   if (bare) return <>{children}</>
 
   return (
@@ -13,7 +12,6 @@ export default function Layout({ children, withWcBar = false, bare = false }) {
       <Header withWcBar={withWcBar} />
       {children}
       <Footer />
-      <VignetteAd />
     </>
   )
 }

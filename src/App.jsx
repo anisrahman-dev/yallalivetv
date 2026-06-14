@@ -4,7 +4,6 @@ import Home from './pages/Home.jsx'
 import Contact from './pages/Contact.jsx'
 import Privacy from './pages/Privacy.jsx'
 import Terms from './pages/Terms.jsx'
-import NetworkAds from './components/NetworkAds.jsx'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -26,7 +25,6 @@ export default function App() {
     <>
       <ScrollToTop />
       <CanonicalUpdater />
-      <NetworkAds />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/index.html" element={<Home />} />
