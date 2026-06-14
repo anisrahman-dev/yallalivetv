@@ -2,8 +2,10 @@
 // original site loads via <script src="matches.js"></script>. We hit
 // the same URL so the admin can keep editing it on GitHub.
 
-export async function loadMatches() {
-  const res = await fetch('/matches.js', { cache: 'no-store' })
+// base = '' loads this site's own /matches.js; pass an absolute origin
+// (e.g. the main .com) to let a landing domain reuse the same feed.
+export async function loadMatches(base = '') {
+  const res = await fetch(`${base}/matches.js`, { cache: 'no-store' })
   if (!res.ok) throw new Error(`Failed to fetch matches.js: ${res.status}`)
   const text = await res.text()
   const m = text.match(/const\s+MATCHES_DATA\s*=\s*(\[[\s\S]*?\]);?\s*$/m)

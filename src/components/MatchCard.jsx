@@ -1,6 +1,8 @@
 import { convertDhakaTimeToLocal } from '../lib/matches.js'
 
-export default function MatchCard({ match, onOpen }) {
+// assetBase prefixes team-logo URLs — '' for this origin, or an absolute
+// origin (the main .com) when a landing domain renders cards from its feed.
+export default function MatchCard({ match, onOpen, assetBase = '' }) {
   const displayLocalTime = convertDhakaTimeToLocal(match.time, match.day)
   const showStatus = match.status && match.status !== "It hasn't started yet." && match.status !== 'Not started'
   const statusBadge = showStatus ? (
@@ -30,10 +32,10 @@ export default function MatchCard({ match, onOpen }) {
         <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between w-[68%] md:w-full gap-2 md:gap-0">
           <div className="flex flex-row items-center gap-3 w-full md:w-[38%] justify-start">
             <img
-              src={'/' + match.homeTeam.logo}
+              src={assetBase + '/' + match.homeTeam.logo}
               alt={match.homeTeam.name}
               className="team-logo-img w-8 h-8 md:w-11 md:h-11 object-contain flex-shrink-0"
-              onError={(e) => { e.currentTarget.src = '/logos/dr-congo.svg' }}
+              onError={(e) => { e.currentTarget.src = assetBase + '/logos/dr-congo.svg' }}
             />
             <span className="text-xs md:text-sm font-bold text-gray-800 dark:text-slate-100 line-clamp-1">
               {match.homeTeam.name}
@@ -47,10 +49,10 @@ export default function MatchCard({ match, onOpen }) {
           </div>
           <div className="flex flex-row items-center gap-3 w-full md:w-[38%] justify-start text-left md:text-right md:flex-row-reverse">
             <img
-              src={'/' + match.awayTeam.logo}
+              src={assetBase + '/' + match.awayTeam.logo}
               alt={match.awayTeam.name}
               className="team-logo-img w-8 h-8 md:w-11 md:h-11 object-contain flex-shrink-0"
-              onError={(e) => { e.currentTarget.src = '/logos/cameroon.svg' }}
+              onError={(e) => { e.currentTarget.src = assetBase + '/logos/cameroon.svg' }}
             />
             <span className="text-xs md:text-sm font-bold text-gray-800 dark:text-slate-100 line-clamp-1">
               {match.awayTeam.name}
