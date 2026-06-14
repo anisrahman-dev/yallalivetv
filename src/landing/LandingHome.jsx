@@ -3,6 +3,7 @@ import LandingLayout from './LandingLayout.jsx'
 import PageMeta from '../components/PageMeta.jsx'
 import MatchCard from '../components/MatchCard.jsx'
 import RedirectModal from '../components/RedirectModal.jsx'
+import LandingGutterAds from './LandingGutterAds.jsx'
 import { loadMatches } from '../lib/matches.js'
 import { MAIN_ORIGIN } from '../lib/domains.js'
 
@@ -36,6 +37,7 @@ export default function LandingHome({ cfg }) {
 
   return (
     <LandingLayout cfg={cfg}>
+      <LandingGutterAds adKey={cfg.skyscraperAdKey} />
       <PageMeta
         title={`${cfg.brand} | ${cfg.headline}`}
         description={cfg.subhead}

@@ -45,7 +45,9 @@ const LANDINGS = {
       'Yalla Live TV brings today’s football matches to whatever screen you’re on. The schedule refreshes daily so you always see what’s live, when it starts in your timezone, and where to watch.',
       'We cover the Premier League, La Liga, Serie A, Bundesliga, Ligue 1 and the major cup competitions — indexed alongside the headline matches of the day.'
     ],
-    email: 'contact@yallalivetv.site'
+    email: 'contact@yallalivetv.site',
+    // 160x600 skyscraper (Adsterra) shown in the side gutters on this domain only.
+    skyscraperAdKey: 'cfd2caecdbd518ae79309dd444c23be7'
   }
 }
 
