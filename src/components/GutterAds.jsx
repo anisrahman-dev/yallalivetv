@@ -13,10 +13,10 @@ export default function GutterAds() {
 
   const grid = (
     <div className="grid grid-cols-2 gap-4">
-      <AdUnit adKey="ec2e4b0a2aa3fcac5cb428225d0ad9a1" width={160} height={600} showLabel={false} />
-      <AdUnit adKey="ec2e4b0a2aa3fcac5cb428225d0ad9a1" width={160} height={600} showLabel={false} />
-      <AdUnit adKey="ec2e4b0a2aa3fcac5cb428225d0ad9a1" width={160} height={600} showLabel={false} />
-      <AdUnit adKey="ec2e4b0a2aa3fcac5cb428225d0ad9a1" width={160} height={600} showLabel={false} />
+      <AdUnit adKey="cfd2caecdbd518ae79309dd444c23be7" width={160} height={600} showLabel={false} />
+      <AdUnit adKey="cfd2caecdbd518ae79309dd444c23be7" width={160} height={600} showLabel={false} />
+      <AdUnit adKey="cfd2caecdbd518ae79309dd444c23be7" width={160} height={600} showLabel={false} />
+      <AdUnit adKey="cfd2caecdbd518ae79309dd444c23be7" width={160} height={600} showLabel={false} />
     </div>
   )
 
